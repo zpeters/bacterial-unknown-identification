@@ -2,6 +2,7 @@ import { useState } from 'react';
 import NavBar from './components/NavBar';
 import Wizard from './components/Wizard';
 import ExportModal from './components/ExportModal';
+import Footer from './components/Footer';
 import './App.css';
 
 export default function App() {
@@ -16,6 +17,8 @@ export default function App() {
       </main>
 
       {exportOpen && <ExportModal onClose={() => setExportOpen(false)} />}
+
+      <Footer />
     </div>
   );
 }
