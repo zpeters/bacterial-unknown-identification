@@ -171,3 +171,27 @@
   color: var(--color-muted);
   margin: 0 0 0.3rem;
 }
+
+/* ─── Dark mode overrides ─── */
+html.dark .rf-decision {
+  background: #1e3a5f;
+  border-color: #3b82f6;
+  color: #93c5fd;
+}
+
+html.dark .rf-result {
+  background: #052e16;
+  border-color: #22c55e;
+  color: #86efac;
+}
+
+html.dark .badge-test {
+  background: #1e3a5f;
+  color: #93c5fd;
+}
+
+html.dark .badge-result {
+  background: #052e16;
+  color: #86efac;
+  border-color: #22c55e;
+}

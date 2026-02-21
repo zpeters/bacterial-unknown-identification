@@ -1,4 +1,5 @@
-import { useMemo, useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
+import { useTheme } from '../context/ThemeContext';
 import {
   ReactFlow,
   Background,
@@ -111,6 +112,7 @@ function DetailPanel({ node, onClose }) {
 const { nodes: initNodes, edges: initEdges } = buildInitialElements();
 
 export default function FlowChart() {
+  const { isDark } = useTheme();
   const [rfNodes, setRfNodes, onNodesChange] = useNodesState(initNodes);
   const [rfEdges, , onEdgesChange] = useEdgesState(initEdges);
   const [selectedNode, setSelectedNode] = useState(null);
@@ -152,7 +154,7 @@ export default function FlowChart() {
           minZoom={0.2}
           maxZoom={2}
         >
-          <Background color="#e2e8f0" gap={20} />
+          <Background color={isDark ? '#334155' : '#e2e8f0'} gap={20} />
           <Controls />
           <MiniMap
             nodeColor={(n) => (n.type === 'result' ? '#22c55e' : '#3b82f6')}

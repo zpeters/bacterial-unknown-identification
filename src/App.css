@@ -14,6 +14,45 @@
   --color-success-subtle: #f0fdf4;
 }
 
+/* ─── Dark mode tokens ─── */
+html.dark {
+  --color-bg: #0f172a;
+  --color-surface: #1e293b;
+  --color-border: #334155;
+  --color-text: #f1f5f9;
+  --color-text-secondary: #94a3b8;
+  --color-muted: #64748b;
+  --color-accent: #60a5fa;
+  --color-accent-dark: #93c5fd;
+  --color-accent-subtle: rgba(96, 165, 250, 0.12);
+  --color-success: #4ade80;
+  --color-success-dark: #86efac;
+  --color-success-subtle: rgba(74, 222, 128, 0.1);
+}
+
+/* ─── React Flow dark mode overrides ─── */
+html.dark .react-flow__controls button {
+  background: var(--color-surface);
+  border-color: var(--color-border);
+  color: var(--color-text);
+  fill: var(--color-text);
+}
+html.dark .react-flow__controls button:hover {
+  background: var(--color-border);
+}
+html.dark .react-flow__minimap {
+  background: var(--color-surface);
+}
+html.dark .react-flow__minimap-mask {
+  fill: rgba(15, 23, 42, 0.6);
+}
+html.dark .react-flow__edge-path {
+  stroke: #475569;
+}
+html.dark .react-flow__edge-label {
+  color: var(--color-text-secondary);
+}
+
 /* ─── App shell ─── */
 .app {
   min-height: 100vh;
