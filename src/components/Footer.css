@@ -9,10 +9,14 @@
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
+  /* min 44px touch target */
+  min-height: 44px;
+  padding: 0 0.5rem;
   font-size: 0.82rem;
   font-weight: 500;
   color: var(--color-muted);
   text-decoration: none;
+  border-radius: 6px;
   transition: color 0.15s;
 }
 

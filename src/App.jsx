@@ -10,9 +10,10 @@ export default function App() {
 
   return (
     <div className="app">
+      <a href="#main-content" className="skip-nav">Skip to main content</a>
       <NavBar onExport={() => setExportOpen(true)} />
 
-      <main className="app-main">
+      <main id="main-content" className="app-main">
         <Wizard />
       </main>
 

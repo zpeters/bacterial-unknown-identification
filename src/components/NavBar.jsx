@@ -16,8 +16,21 @@ export default function NavBar({ onExport }) {
       <div className="navbar-inner">
         {/* App identity */}
         <div className="navbar-brand">
-          <span className="navbar-title">Unknown ID</span>
-          <span className="navbar-subtitle">Microbiology Lab</span>
+          <svg className="navbar-logo" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+            <circle cx="16" cy="16" r="15" fill="#eff6ff"/>
+            <circle cx="16" cy="16" r="15" fill="none" stroke="#3b82f6" strokeWidth="2"/>
+            <circle cx="11" cy="12" r="2.8" fill="#22c55e"/>
+            <circle cx="20" cy="10" r="2" fill="#22c55e"/>
+            <circle cx="12" cy="21" r="2.2" fill="#22c55e"/>
+            <circle cx="21" cy="20" r="2.8" fill="#22c55e"/>
+            <circle cx="17" cy="15" r="1.6" fill="#22c55e"/>
+            <circle cx="8"  cy="18" r="1.6" fill="#22c55e"/>
+            <circle cx="23" cy="13" r="1.4" fill="#22c55e"/>
+          </svg>
+          <div className="navbar-brand-text">
+            <span className="navbar-title">Bacterial Unknown Identification</span>
+            <span className="navbar-subtitle">Microbiology Lab</span>
+          </div>
         </div>
 
         {/* Wizard type tabs */}
@@ -64,7 +77,7 @@ export default function NavBar({ onExport }) {
               <polyline points="7 10 12 15 17 10"/>
               <line x1="12" y1="15" x2="12" y2="3"/>
             </svg>
-            Export Chart
+            <span className="export-btn-label">Export Chart</span>
           </button>
         </div>
       </div>
