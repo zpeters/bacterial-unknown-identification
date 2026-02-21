@@ -1,8 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
-import { nodes, getStepsRemaining, MAX_STEPS } from '../data/gramPositive';
 import './Wizard.css';
 
-function StepsRemaining({ current, stepsDone }) {
+function StepsRemaining({ current, stepsDone, getStepsRemaining }) {
   if (current.type === 'result') {
     return (
       <div className="progress-bar-wrapper" role="status" aria-live="polite">
@@ -46,7 +45,8 @@ function StepsRemaining({ current, stepsDone }) {
   );
 }
 
-export default function Wizard() {
+export default function Wizard({ wizardData }) {
+  const { nodes, getStepsRemaining } = wizardData;
   const [history, setHistory] = useState([nodes['root']]);
   const cardTitleRef = useRef(null);
 
@@ -78,7 +78,7 @@ export default function Wizard() {
   return (
     <div className="wizard">
       {/* Steps remaining */}
-      <StepsRemaining current={current} stepsDone={stepsDone} />
+      <StepsRemaining current={current} stepsDone={stepsDone} getStepsRemaining={getStepsRemaining} />
 
       {/* Breadcrumb — helps screen readers & keyboard users retrace steps */}
       <nav className="wizard-breadcrumb" aria-label="Identification path">

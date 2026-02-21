@@ -1,0 +1,379 @@
+// Gram Negative Bacterial Identification Flowchart Data
+
+export const gramNegativeTree = {
+  id: 'root',
+  type: 'decision',
+  label: 'Cell Morphology',
+  description: 'After confirming Gram negative stain (pink/red), examine cell shape under the microscope.',
+  question: 'What is the cell morphology of your Gram negative organism?',
+  options: [
+    { label: 'Cocci (spherical/oval)', nextId: 'oxidase_cocci' },
+    { label: 'Rods (bacilli)', nextId: 'oxidase_rods' },
+  ],
+};
+
+export const nodes = {
+  root: gramNegativeTree,
+
+  // ─── COCCI BRANCH ────────────────────────────────────────────────────────────
+
+  oxidase_cocci: {
+    id: 'oxidase_cocci',
+    type: 'decision',
+    label: 'Oxidase Test',
+    description:
+      'Apply oxidase reagent (tetramethyl-p-phenylenediamine) to a colony on filter paper. Purple/blue color within 10 seconds = positive. Gram negative cocci are nearly all oxidase positive.',
+    question: 'What is the result of the oxidase test?',
+    options: [
+      { label: 'Positive (+) — purple/blue', nextId: 'sugar_fermentation' },
+      { label: 'Negative (−) — no color change', nextId: 'result_acinetobacter' },
+    ],
+  },
+
+  sugar_fermentation: {
+    id: 'sugar_fermentation',
+    type: 'decision',
+    label: 'Sugar Fermentation (CTA)',
+    description:
+      'Inoculate Cystine Tryptic Agar (CTA) tubes containing glucose and maltose. Yellow color (acid) = fermentation. Used to differentiate Neisseria species from each other and from Moraxella.',
+    question: 'Which sugars are fermented (acid production in CTA tubes)?',
+    options: [
+      { label: 'Glucose and Maltose', nextId: 'result_meningitidis' },
+      { label: 'Glucose only (not Maltose)', nextId: 'result_gonorrhoeae' },
+      { label: 'Neither', nextId: 'result_moraxella' },
+    ],
+  },
+
+  result_meningitidis: {
+    id: 'result_meningitidis',
+    type: 'result',
+    label: 'Neisseria meningitidis',
+    description:
+      'Gram negative diplococcus, oxidase positive, ferments glucose and maltose. Leading cause of bacterial meningitis and meningococcemia. Carried asymptomatically in the nasopharynx of ~10% of people. Polysaccharide capsule is the key virulence factor. Vaccine-preventable.',
+    organism: 'Neisseria meningitidis',
+  },
+
+  result_gonorrhoeae: {
+    id: 'result_gonorrhoeae',
+    type: 'result',
+    label: 'Neisseria gonorrhoeae',
+    description:
+      'Gram negative diplococcus, oxidase positive, ferments glucose only (not maltose). Causes gonorrhea, pelvic inflammatory disease, and neonatal ophthalmia. Requires enriched media (Thayer-Martin or chocolate agar) due to fastidious growth requirements. No vaccine available.',
+    organism: 'Neisseria gonorrhoeae',
+  },
+
+  result_moraxella: {
+    id: 'result_moraxella',
+    type: 'result',
+    label: 'Moraxella catarrhalis',
+    description:
+      'Gram negative diplococcus, oxidase positive, does not ferment glucose or maltose. DNase positive; "hockey puck" sign on blood agar (colonies slide intact). Normal upper respiratory flora; causes otitis media, sinusitis, and COPD exacerbations. Nearly all strains produce β-lactamase.',
+    organism: 'Moraxella catarrhalis',
+  },
+
+  result_acinetobacter: {
+    id: 'result_acinetobacter',
+    type: 'result',
+    label: 'Acinetobacter spp.',
+    description:
+      'Gram negative coccobacillus, oxidase negative (unlike most GN cocci). Ubiquitous in soil and water; major nosocomial pathogen in ICU settings. Notorious for acquiring multi-drug resistance (MDRAB). Causes ventilator-associated pneumonia, wound infections, and bacteremia.',
+    organism: 'Acinetobacter spp.',
+  },
+
+  // ─── RODS BRANCH ─────────────────────────────────────────────────────────────
+
+  oxidase_rods: {
+    id: 'oxidase_rods',
+    type: 'decision',
+    label: 'Oxidase Test',
+    description:
+      'Apply oxidase reagent to a colony. Purple/blue = positive. This single test separates the Enterobacteriaceae (oxidase negative — the largest family of GN rods) from non-fermenters and other gram negative rods.',
+    question: 'What is the result of the oxidase test?',
+    options: [
+      { label: 'Negative (−) — Enterobacteriaceae', nextId: 'lactose' },
+      { label: 'Positive (+) — Non-Enterobacteriaceae', nextId: 'glucose_of' },
+    ],
+  },
+
+  // ─── ENTEROBACTERIACEAE (oxidase negative) ────────────────────────────────────
+
+  lactose: {
+    id: 'lactose',
+    type: 'decision',
+    label: 'Lactose Fermentation (MacConkey)',
+    description:
+      'Observe colony color on MacConkey agar after 24–48 h. Pink/red colonies = lactose fermenters (acid turns the neutral red indicator). Colorless/translucent = non-fermenters. This is one of the most informative initial screens.',
+    question: 'Does the organism ferment lactose on MacConkey agar?',
+    options: [
+      { label: 'Positive (+) — pink or red colonies', nextId: 'indole' },
+      { label: 'Negative (−) — colorless colonies', nextId: 'h2s' },
+    ],
+  },
+
+  // Lactose positive branch
+  indole: {
+    id: 'indole',
+    type: 'decision',
+    label: 'Indole Test',
+    description:
+      "Add Kovacs' reagent to a tryptone broth culture. A red ring at the surface = positive. Tests for tryptophanase enzyme, which degrades tryptophan to indole. One of the four IMViC tests.",
+    question: 'What is the result of the indole test?',
+    options: [
+      { label: 'Positive (+) — red ring', nextId: 'result_ecoli' },
+      { label: 'Negative (−) — no ring', nextId: 'urease_kleb' },
+    ],
+  },
+
+  result_ecoli: {
+    id: 'result_ecoli',
+    type: 'result',
+    label: 'Escherichia coli',
+    description:
+      'Gram negative rod, oxidase negative, lactose fermenter, indole positive. Most common cause of UTIs and gram negative bacteremia. Pathogenic strains cause gastroenteritis (ETEC traveler\'s diarrhea; EHEC O157:H7 HUS), neonatal meningitis. IMViC: +, +, −, −. Flat metallic green sheen on EMB agar.',
+    organism: 'Escherichia coli',
+  },
+
+  urease_kleb: {
+    id: 'urease_kleb',
+    type: 'decision',
+    label: 'Urease Test',
+    description:
+      "Inoculate Christensen's urea agar. Pink/magenta color = positive (ammonia raises pH). Differentiates Klebsiella (urease positive) from Enterobacter (urease negative) among indole-negative lactose fermenters.",
+    question: 'What is the result of the urease test?',
+    options: [
+      { label: 'Positive (+) — pink/magenta', nextId: 'result_klebsiella' },
+      { label: 'Negative (−)', nextId: 'result_enterobacter' },
+    ],
+  },
+
+  result_klebsiella: {
+    id: 'result_klebsiella',
+    type: 'result',
+    label: 'Klebsiella pneumoniae',
+    description:
+      'Gram negative rod, oxidase negative, lactose fermenter, indole negative, urease positive. Non-motile; produces large mucoid colonies (capsule). Causes lobar pneumonia with "currant jelly" sputum, UTIs, and bacteremia. IMViC: −, −, +, +. Hypervirulent strains cause liver abscesses.',
+    organism: 'Klebsiella pneumoniae',
+  },
+
+  result_enterobacter: {
+    id: 'result_enterobacter',
+    type: 'result',
+    label: 'Enterobacter cloacae',
+    description:
+      'Gram negative rod, oxidase negative, lactose fermenter, indole negative, urease negative. Motile with peritrichous flagella; VP positive. Opportunistic pathogen in hospitalized patients (UTIs, pneumonia, bacteremia). Intrinsically resistant to ampicillin and 1st/2nd-generation cephalosporins. IMViC: −, −, +, +.',
+    organism: 'Enterobacter cloacae',
+  },
+
+  // Lactose negative branch
+  h2s: {
+    id: 'h2s',
+    type: 'decision',
+    label: 'H₂S Production (TSI)',
+    description:
+      'Observe Triple Sugar Iron (TSI) agar after 18–24 h incubation. Black precipitate in butt = H₂S positive (ferrous sulfide). H₂S production results from reduction of sulfur-containing amino acids or thiosulfate.',
+    question: 'Is H₂S produced on TSI agar (black precipitate)?',
+    options: [
+      { label: 'Positive (+) — black precipitate', nextId: 'urease_h2s' },
+      { label: 'Negative (−) — no blackening', nextId: 'motility_gn' },
+    ],
+  },
+
+  urease_h2s: {
+    id: 'urease_h2s',
+    type: 'decision',
+    label: 'Urease Test',
+    description:
+      "Inoculate Christensen's urea agar. Pink/magenta = positive. Among H₂S-positive, lactose-negative organisms, urease activity separates Proteus (strongly positive, swarming motility) from Salmonella (urease negative).",
+    question: 'What is the result of the urease test?',
+    options: [
+      { label: 'Positive (+) — pink/magenta', nextId: 'result_proteus_mirabilis' },
+      { label: 'Negative (−)', nextId: 'result_salmonella' },
+    ],
+  },
+
+  result_proteus_mirabilis: {
+    id: 'result_proteus_mirabilis',
+    type: 'result',
+    label: 'Proteus mirabilis',
+    description:
+      'Gram negative rod, oxidase negative, lactose negative, H₂S positive, strongly urease positive. Characteristically "swarms" across blood agar in concentric waves. Causes UTIs (especially catheter-associated); urease activity alkalinizes urine, promoting struvite (staghorn) kidney stones. Ornithine decarboxylase positive.',
+    organism: 'Proteus mirabilis',
+  },
+
+  result_salmonella: {
+    id: 'result_salmonella',
+    type: 'result',
+    label: 'Salmonella spp.',
+    description:
+      'Gram negative rod, oxidase negative, lactose negative, H₂S positive, urease negative. Causes salmonellosis (gastroenteritis from contaminated food) and typhoid fever (S. typhi/paratyphi — rose spots, bradycardia, splenomegaly). Facultative intracellular; survives in macrophages. Notifiable disease.',
+    organism: 'Salmonella spp.',
+  },
+
+  motility_gn: {
+    id: 'motility_gn',
+    type: 'decision',
+    label: 'Motility Test',
+    description:
+      'Use motility test medium (semi-solid agar) or wet mount. Growth extending from stab line = motile. Shigella is a key organism that is notably non-motile — an important differentiating feature from other GN rods.',
+    question: 'Is the organism motile?',
+    options: [
+      { label: 'Non-motile', nextId: 'result_shigella' },
+      { label: 'Motile', nextId: 'urease_motile' },
+    ],
+  },
+
+  result_shigella: {
+    id: 'result_shigella',
+    type: 'result',
+    label: 'Shigella spp.',
+    description:
+      'Gram negative rod, oxidase negative, lactose negative, H₂S negative, non-motile. Causes bacillary dysentery — bloody, mucoid diarrhea with fever. Extremely low infectious dose (~10–100 organisms). Four species: S. dysenteriae (most severe), S. flexneri, S. boydii, S. sonnei (most common in US). Does not produce H₂S or urease.',
+    organism: 'Shigella spp.',
+  },
+
+  urease_motile: {
+    id: 'urease_motile',
+    type: 'decision',
+    label: 'Urease Test',
+    description:
+      "Inoculate Christensen's urea agar. Pink/magenta = positive. Among H₂S-negative, lactose-negative, motile organisms, urease differentiates Proteus vulgaris from Yersinia and other non-H₂S-producing rods.",
+    question: 'What is the result of the urease test?',
+    options: [
+      { label: 'Positive (+)', nextId: 'result_proteus_vulgaris' },
+      { label: 'Negative (−)', nextId: 'result_yersinia' },
+    ],
+  },
+
+  result_proteus_vulgaris: {
+    id: 'result_proteus_vulgaris',
+    type: 'result',
+    label: 'Proteus vulgaris',
+    description:
+      'Gram negative rod, oxidase negative, lactose negative, H₂S negative, motile, urease positive. Distinguished from P. mirabilis by positive indole and negative ornithine decarboxylase. Causes UTIs and wound infections; less common clinically than P. mirabilis.',
+    organism: 'Proteus vulgaris',
+  },
+
+  result_yersinia: {
+    id: 'result_yersinia',
+    type: 'result',
+    label: 'Yersinia spp.',
+    description:
+      'Gram negative rod, oxidase negative, lactose negative, H₂S negative, motile at 25°C but non-motile at 37°C (a useful distinguishing feature). Y. pestis causes plague (bubonic, septicemic, pneumonic); Y. enterocolitica causes gastroenteritis and reactive arthritis (Reiter syndrome). Cold-tolerant — can multiply in refrigerated food.',
+    organism: 'Yersinia spp.',
+  },
+
+  // ─── NON-ENTEROBACTERIACEAE (oxidase positive) ───────────────────────────────
+
+  glucose_of: {
+    id: 'glucose_of',
+    type: 'decision',
+    label: 'Glucose O/F Test',
+    description:
+      'Inoculate two tubes of Hugh-Leifson O/F medium; overlay one with mineral oil (anaerobic). Acid in both tubes = fermentation. Acid in open tube only = oxidation. No acid in either = non-reactive. Separates fermenters (Vibrio, Aeromonas) from oxidizers (Pseudomonas).',
+    question: 'How does the organism utilize glucose in O/F medium?',
+    options: [
+      { label: 'Fermentation (acid in both tubes)', nextId: 'salt_curved' },
+      { label: 'Oxidation only (open tube only)', nextId: 'pyocyanin' },
+    ],
+  },
+
+  salt_curved: {
+    id: 'salt_curved',
+    type: 'decision',
+    label: 'Salt Tolerance + Cell Morphology',
+    description:
+      'Test growth in 6.5% NaCl broth (halophilic = Vibrio) and examine cell morphology. Vibrio has characteristic curved or comma-shaped cells and tolerates salt. Aeromonas is a straight rod and is not halophilic.',
+    question: 'Does the organism tolerate 6.5% NaCl and/or have curved cells?',
+    options: [
+      { label: 'Yes — salt tolerant / curved cells', nextId: 'result_vibrio' },
+      { label: 'No — straight rod, no salt tolerance', nextId: 'result_aeromonas' },
+    ],
+  },
+
+  result_vibrio: {
+    id: 'result_vibrio',
+    type: 'result',
+    label: 'Vibrio cholerae',
+    description:
+      'Gram negative curved rod, oxidase positive, glucose fermenter, salt tolerant. Causes cholera — profuse rice-water diarrhea from cholera toxin (ADP-ribosylates Gs → ↑cAMP → Cl⁻/H₂O secretion). Can lose 20 L/day. Transmitted via contaminated water. Positive "cholera red" reaction (string test positive). O1 and O139 serotypes cause epidemic cholera.',
+    organism: 'Vibrio cholerae',
+  },
+
+  result_aeromonas: {
+    id: 'result_aeromonas',
+    type: 'result',
+    label: 'Aeromonas hydrophila',
+    description:
+      'Gram negative straight rod, oxidase positive, glucose fermenter, not salt tolerant. Found in fresh and brackish water and soil. Causes gastroenteritis (from contaminated water/seafood), wound infections after water exposure, and septicemia in immunocompromised patients. Intrinsically resistant to ampicillin.',
+    organism: 'Aeromonas hydrophila',
+  },
+
+  pyocyanin: {
+    id: 'pyocyanin',
+    type: 'decision',
+    label: 'Pyocyanin Pigment',
+    description:
+      'Observe culture for blue-green pigment (pyocyanin) on Mueller-Hinton or cetrimide agar. Pyocyanin is a phenazine pigment unique to P. aeruginosa among common clinical isolates. Also look for a grape-like or corn tortilla odor.',
+    question: 'Is blue-green (pyocyanin) pigment produced?',
+    options: [
+      { label: 'Present — blue-green pigment', nextId: 'result_pseudomonas' },
+      { label: 'Absent', nextId: 'result_burkholderia' },
+    ],
+  },
+
+  result_pseudomonas: {
+    id: 'result_pseudomonas',
+    type: 'result',
+    label: 'Pseudomonas aeruginosa',
+    description:
+      'Gram negative rod, oxidase positive, non-fermenter (glucose oxidizer only), produces pyocyanin (blue-green) and pyoverdine (yellow-green). Characteristic grape-like odor. Major pathogen in cystic fibrosis (mucoid biofilm-forming strains), burn wounds, and healthcare-associated infections. Intrinsically resistant to many antibiotics; often requires anti-pseudomonal agents.',
+    organism: 'Pseudomonas aeruginosa',
+  },
+
+  result_burkholderia: {
+    id: 'result_burkholderia',
+    type: 'result',
+    label: 'Burkholderia / Stenotrophomonas',
+    description:
+      'Gram negative rod, oxidase positive (Burkholderia) or variable, non-fermenter, no pyocyanin. B. cepacia complex is a devastating pathogen in CF patients (accelerates lung decline, "cepacia syndrome"). S. maltophilia is an emerging opportunistic pathogen with very high intrinsic antibiotic resistance (resistant to carbapenems); TMP-SMX is drug of choice.',
+    organism: 'Burkholderia / Stenotrophomonas',
+  },
+};
+
+// ─── Steps remaining calculator ──────────────────────────────────────────────
+const _stepsCache = {};
+export function getStepsRemaining(nodeId) {
+  if (_stepsCache[nodeId] !== undefined) return _stepsCache[nodeId];
+  const node = nodes[nodeId];
+  if (!node || node.type === 'result') {
+    _stepsCache[nodeId] = { min: 0, max: 0 };
+    return _stepsCache[nodeId];
+  }
+  let minSteps = Infinity;
+  let maxSteps = 0;
+  for (const opt of node.options) {
+    const child = getStepsRemaining(opt.nextId);
+    minSteps = Math.min(minSteps, child.min + 1);
+    maxSteps = Math.max(maxSteps, child.max + 1);
+  }
+  _stepsCache[nodeId] = { min: minSteps, max: maxSteps };
+  return _stepsCache[nodeId];
+}
+
+// ─── Edge list for React Flow ─────────────────────────────────────────────────
+export function getEdges() {
+  const edges = [];
+  Object.values(nodes).forEach((node) => {
+    if (node.options) {
+      node.options.forEach((opt, i) => {
+        edges.push({
+          id: `${node.id}-${opt.nextId}-${i}`,
+          source: node.id,
+          target: opt.nextId,
+          label: opt.label,
+        });
+      });
+    }
+  });
+  return edges;
+}

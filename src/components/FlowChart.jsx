@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useMemo } from 'react';
 import { useTheme } from '../context/ThemeContext';
 import {
   ReactFlow,
@@ -13,7 +13,6 @@ import {
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import dagre from '@dagrejs/dagre';
-import { nodes as dataNodes, getEdges } from '../data/gramPositive';
 import './FlowChart.css';
 
 // ─── Dagre layout ────────────────────────────────────────────────────────────
@@ -61,9 +60,9 @@ function ResultNode({ data }) {
 
 const nodeTypes = { decision: DecisionNode, result: ResultNode };
 
-// ─── Build initial RF nodes/edges from data ───────────────────────────────────
+// ─── Build RF nodes/edges from data ──────────────────────────────────────────
 
-function buildInitialElements() {
+function buildInitialElements(dataNodes, getEdgesFn) {
   const rfNodes = Object.values(dataNodes).map((n) => ({
     id: n.id,
     type: n.type,
@@ -71,8 +70,7 @@ function buildInitialElements() {
     position: { x: 0, y: 0 },
   }));
 
-  const dataEdges = getEdges();
-  const rfEdges = dataEdges.map((e) => ({
+  const rfEdges = getEdgesFn().map((e) => ({
     ...e,
     markerEnd: { type: MarkerType.ArrowClosed, width: 14, height: 14, color: '#94a3b8' },
     style: { stroke: '#94a3b8', strokeWidth: 1.5 },
@@ -85,12 +83,13 @@ function buildInitialElements() {
 
 // ─── Detail panel ─────────────────────────────────────────────────────────────
 
-function DetailPanel({ node, onClose }) {
+function DetailPanel({ node, dataNodes, onClose }) {
   if (!node) return null;
   const data = dataNodes[node.id];
+  if (!data) return null;
   return (
     <div className="detail-panel">
-      <button className="detail-close" onClick={onClose}>✕</button>
+      <button className="detail-close" onClick={onClose} aria-label="Close panel">✕</button>
       <span className={`detail-badge ${data.type === 'result' ? 'badge-result' : 'badge-test'}`}>
         {data.type === 'result' ? 'Organism Identified' : 'Test'}
       </span>
@@ -109,10 +108,15 @@ function DetailPanel({ node, onClose }) {
 
 // ─── Main component ───────────────────────────────────────────────────────────
 
-const { nodes: initNodes, edges: initEdges } = buildInitialElements();
-
-export default function FlowChart() {
+export default function FlowChart({ wizardData }) {
+  const { dataNodes, getEdgesFn } = wizardData;
   const { isDark } = useTheme();
+
+  const { nodes: initNodes, edges: initEdges } = useMemo(
+    () => buildInitialElements(dataNodes, getEdgesFn),
+    [dataNodes, getEdgesFn]
+  );
+
   const [rfNodes, setRfNodes, onNodesChange] = useNodesState(initNodes);
   const [rfEdges, , onEdgesChange] = useEdgesState(initEdges);
   const [selectedNode, setSelectedNode] = useState(null);
@@ -120,7 +124,6 @@ export default function FlowChart() {
   const onNodeClick = useCallback(
     (_, node) => {
       setSelectedNode(node);
-      // Highlight clicked node
       setRfNodes((nds) =>
         nds.map((n) => ({
           ...n,
@@ -162,7 +165,7 @@ export default function FlowChart() {
           />
         </ReactFlow>
         {selectedNode && (
-          <DetailPanel node={selectedNode} onClose={closePanel} />
+          <DetailPanel node={selectedNode} dataNodes={dataNodes} onClose={closePanel} />
         )}
       </div>
     </div>

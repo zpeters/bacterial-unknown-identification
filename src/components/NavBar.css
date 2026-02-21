@@ -6,23 +6,25 @@
   z-index: 100;
 }
 
-.navbar-inner {
+/* ─── Row 1: brand + actions ─── */
+
+.navbar-top {
   max-width: 1100px;
   margin: 0 auto;
   padding: 0 1.5rem;
   height: 60px;
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  justify-content: space-between;
+  gap: 1rem;
 }
 
-/* ─── Brand ─── */
 .navbar-brand {
   display: flex;
   align-items: center;
   gap: 0.65rem;
   flex-shrink: 0;
-  text-decoration: none;
+  min-width: 0;
 }
 
 .navbar-logo {
@@ -35,6 +37,7 @@
   display: flex;
   flex-direction: column;
   line-height: 1.2;
+  min-width: 0;
 }
 
 .navbar-title {
@@ -43,6 +46,8 @@
   color: var(--color-text);
   letter-spacing: -0.01em;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .navbar-subtitle {
@@ -52,92 +57,17 @@
   letter-spacing: 0.06em;
 }
 
-/* ─── Tabs ─── */
-.navbar-tabs {
-  display: flex;
-  align-items: center;
-  gap: 0.2rem;
-  flex: 1;
-  overflow-x: auto;
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
-}
-
-.navbar-tabs::-webkit-scrollbar {
-  display: none;
-}
-
-.tab-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  /* min 44px touch target (WCAG 2.5.5) */
-  min-height: 44px;
-  padding: 0 0.85rem;
-  border: none;
-  background: transparent;
-  border-radius: 6px;
-  font-size: 0.85rem;
-  font-family: inherit;
-  font-weight: 500;
-  color: var(--color-text-secondary);
-  cursor: pointer;
-  transition: background 0.15s, color 0.15s;
-  white-space: nowrap;
-  position: relative;
-}
-
-.tab-btn.active {
-  background: var(--color-accent-subtle);
-  color: var(--color-accent-dark);
-  font-weight: 600;
-}
-
-.tab-btn.active::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0.5rem;
-  right: 0.5rem;
-  height: 2px;
-  background: var(--color-accent);
-  border-radius: 2px 2px 0 0;
-}
-
-.tab-btn.disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.tab-btn.disabled:hover {
-  background: transparent;
-}
-
-.tab-soon {
-  font-size: 0.62rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  background: var(--color-border);
-  color: var(--color-muted);
-  padding: 0.05rem 0.35rem;
-  border-radius: 999px;
-}
-
-/* ─── Actions ─── */
 .navbar-actions {
-  flex-shrink: 0;
-  margin-left: auto;
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  flex-shrink: 0;
 }
 
 .theme-toggle {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  /* min 44×44 touch target */
   min-width: 44px;
   min-height: 44px;
   background: var(--color-bg);
@@ -158,7 +88,6 @@
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  /* min 44px touch target */
   min-height: 44px;
   padding: 0 1rem;
   background: var(--color-surface);
@@ -179,42 +108,100 @@
   background: var(--color-accent-subtle);
 }
 
-/* ─── Mobile: tabs wrap to their own row ─── */
-@media (max-width: 700px) {
-  .navbar-inner {
-    height: auto;
-    flex-wrap: wrap;
-    padding: 0.5rem 1rem 0;
-    gap: 0;
-    row-gap: 0;
+/* ─── Row 2: tabs (always its own row — never overlaps brand) ─── */
+
+.navbar-tabs-bar {
+  border-top: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.navbar-tabs {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  align-items: stretch;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  gap: 0.15rem;
+}
+
+.navbar-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 40px;
+  padding: 0 0.9rem;
+  border: none;
+  background: transparent;
+  border-bottom: 2px solid transparent;
+  font-size: 0.85rem;
+  font-family: inherit;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+  white-space: nowrap;
+  border-radius: 0;
+  margin-bottom: -1px; /* overlap the bar's border-top for active underline */
+}
+
+.tab-btn:hover:not(.tab-disabled) {
+  color: var(--color-text);
+  background: var(--color-accent-subtle);
+}
+
+.tab-btn.active {
+  color: var(--color-accent-dark);
+  font-weight: 600;
+  border-bottom-color: var(--color-accent);
+}
+
+.tab-disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.tab-soon {
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: var(--color-border);
+  color: var(--color-muted);
+  padding: 0.05rem 0.35rem;
+  border-radius: 999px;
+}
+
+/* ─── Mobile ─── */
+
+@media (max-width: 600px) {
+  .navbar-top {
+    padding: 0 1rem;
+    height: 54px;
   }
 
-  .navbar-brand {
-    flex: 1;
-    padding: 0.5rem 0;
-  }
-
-  /* Hide the subtitle on very small screens */
   .navbar-subtitle {
     display: none;
   }
 
-  /* Hide "Export Chart" label, show icon only */
   .export-btn-label {
     display: none;
   }
 
-  .navbar-actions {
-    margin-left: 0;
-    padding: 0.5rem 0;
+  .export-btn {
+    min-width: 44px;
+    padding: 0 0.75rem;
+    justify-content: center;
   }
 
   .navbar-tabs {
-    order: 3;
-    width: 100%;
-    border-top: 1px solid var(--color-border);
-    padding: 0.25rem 0;
-    gap: 0;
+    padding: 0 0.5rem;
   }
 
   .tab-btn {

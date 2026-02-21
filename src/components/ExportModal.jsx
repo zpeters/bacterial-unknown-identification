@@ -3,7 +3,7 @@ import { toPng } from 'html-to-image';
 import FlowChart from './FlowChart';
 import './ExportModal.css';
 
-export default function ExportModal({ onClose }) {
+export default function ExportModal({ onClose, wizardData }) {
   const chartRef = useRef(null);
   const [downloading, setDownloading] = useState(false);
 
@@ -25,7 +25,7 @@ export default function ExportModal({ onClose }) {
         },
       });
       const link = document.createElement('a');
-      link.download = 'gram-positive-identification-chart.png';
+      link.download = `${wizardData.key}-identification-chart.png`;
       link.href = dataUrl;
       link.click();
     } catch (err) {
@@ -45,7 +45,7 @@ export default function ExportModal({ onClose }) {
       <div className="modal-panel">
         <div className="modal-header">
           <div>
-            <h2 className="modal-title">Gram Positive Identification Chart</h2>
+            <h2 className="modal-title">{wizardData.title} Identification Chart</h2>
             <p className="modal-subtitle">Pan and zoom to explore — download saves full resolution</p>
           </div>
           <div className="modal-actions">
@@ -69,7 +69,7 @@ export default function ExportModal({ onClose }) {
           </div>
         </div>
         <div className="modal-chart" ref={chartRef}>
-          <FlowChart />
+          <FlowChart wizardData={wizardData} />
         </div>
       </div>
     </div>
