@@ -1,0 +1,227 @@
+.wizard {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+}
+
+/* ─── Steps remaining / progress ─── */
+
+.progress-bar-wrapper {
+  margin-bottom: 1.25rem;
+}
+
+.progress-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.4rem;
+}
+
+.progress-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--color-muted);
+}
+
+.progress-detail {
+  font-size: 0.82rem;
+  color: var(--color-text-secondary);
+  font-weight: 500;
+}
+
+.progress-detail.identified {
+  color: var(--color-success-dark);
+  font-weight: 600;
+}
+
+.progress-track {
+  height: 6px;
+  background: var(--color-border);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--color-accent);
+  border-radius: 999px;
+  transition: width 0.4s ease;
+}
+
+.wizard-card.result-card ~ * .progress-fill,
+.progress-fill[style*="width: 100%"] {
+  background: var(--color-success);
+}
+
+/* Breadcrumb */
+.wizard-breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.82rem;
+}
+
+.breadcrumb-btn {
+  background: none;
+  border: none;
+  color: var(--color-accent);
+  cursor: pointer;
+  padding: 0.1rem 0.25rem;
+  border-radius: 4px;
+  font-size: inherit;
+  font-family: inherit;
+}
+
+.breadcrumb-btn:hover {
+  background: var(--color-accent-subtle);
+}
+
+.breadcrumb-sep {
+  color: var(--color-muted);
+}
+
+
+/* Card */
+.wizard-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 1.75rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  transition: border-color 0.2s;
+}
+
+.wizard-card.result-card {
+  border-color: var(--color-success);
+  background: var(--color-success-subtle);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.card-title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--color-text);
+}
+
+.badge {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  white-space: nowrap;
+}
+
+.badge-test {
+  background: var(--color-accent-subtle);
+  color: var(--color-accent-dark);
+}
+
+.badge-result {
+  background: var(--color-success-subtle);
+  color: var(--color-success-dark);
+  border: 1px solid var(--color-success);
+}
+
+.card-description {
+  color: var(--color-text-secondary);
+  line-height: 1.65;
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+}
+
+/* Question & options */
+.wizard-question {
+  border-top: 1px solid var(--color-border);
+  padding-top: 1.25rem;
+}
+
+.question-text {
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--color-text);
+}
+
+.option-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.option-btn {
+  width: 100%;
+  text-align: left;
+  padding: 0.85rem 1.1rem;
+  background: var(--color-bg);
+  border: 1.5px solid var(--color-border);
+  border-radius: 8px;
+  font-size: 0.93rem;
+  font-family: inherit;
+  cursor: pointer;
+  color: var(--color-text);
+  transition: border-color 0.15s, background 0.15s, transform 0.1s;
+}
+
+.option-btn:hover {
+  border-color: var(--color-accent);
+  background: var(--color-accent-subtle);
+  transform: translateY(-1px);
+}
+
+/* Result organism */
+.result-organism {
+  border-top: 1px solid var(--color-success);
+  padding-top: 1.25rem;
+}
+
+.organism-name {
+  font-style: italic;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--color-success-dark);
+  margin: 0;
+}
+
+/* Navigation */
+.wizard-nav {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.nav-btn {
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.nav-btn.secondary {
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-border);
+  color: var(--color-text);
+}
+
+.nav-btn.secondary:hover:not(:disabled) {
+  border-color: var(--color-accent);
+  background: var(--color-accent-subtle);
+}
+
+.nav-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}

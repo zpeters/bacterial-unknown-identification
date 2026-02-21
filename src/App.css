@@ -1,0 +1,29 @@
+/* ─── Design tokens ─── */
+:root {
+  --color-bg: #f8fafc;
+  --color-surface: #ffffff;
+  --color-border: #e2e8f0;
+  --color-text: #0f172a;
+  --color-text-secondary: #475569;
+  --color-muted: #94a3b8;
+  --color-accent: #3b82f6;
+  --color-accent-dark: #1d4ed8;
+  --color-accent-subtle: #eff6ff;
+  --color-success: #22c55e;
+  --color-success-dark: #15803d;
+  --color-success-subtle: #f0fdf4;
+}
+
+/* ─── App shell ─── */
+.app {
+  min-height: 100vh;
+  background: var(--color-bg);
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  color: var(--color-text);
+}
+
+.app-main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
