@@ -1,0 +1,91 @@
+.node-form {
+  max-width: 560px;
+}
+
+.form-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.type-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.2rem 0.65rem;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.type-badge.decision {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.type-badge.result {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.field-error {
+  font-size: 0.75rem;
+  color: #dc2626;
+  margin-top: 0.1rem;
+}
+
+/* ─── Options ────────────────────────────────────────────────────────────── */
+
+.options-section {
+  margin-top: 0.5rem;
+}
+
+.options-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.options-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.options-empty {
+  font-size: 0.8rem;
+  color: #94a3b8;
+  margin: 0.25rem 0 0.5rem;
+}
+
+.option-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 0.6rem;
+  margin-bottom: 0.5rem;
+}
+
+.option-fields {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.option-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding-top: 1.2rem;
+}
+
+select.error {
+  border-color: #ef4444;
+}

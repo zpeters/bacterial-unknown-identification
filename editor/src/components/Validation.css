@@ -1,0 +1,30 @@
+.validation-bar {
+  padding: 0.35rem 1rem;
+  font-size: 0.78rem;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: center;
+  height: 42px;
+  overflow: hidden;
+}
+
+.validation-bar.ok {
+  background: #f0fdf4;
+  color: #166534;
+  border-bottom: 1px solid #bbf7d0;
+}
+
+.validation-bar.issues {
+  background: #fff7ed;
+  border-bottom: 1px solid #fed7aa;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.v-item {
+  flex-shrink: 0;
+}
+
+.v-item.error { color: #b91c1c; }
+.v-item.warning { color: #92400e; }
