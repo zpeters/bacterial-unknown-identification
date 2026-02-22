@@ -10,22 +10,45 @@ function validate(nodes) {
     return { errors, warnings }
   }
 
-  // BFS reachability from root
+  // ─── BFS reachability from root ─────────────────────────────────────────
   const reachable = new Set()
-  const queue = ['root']
-  while (queue.length > 0) {
-    const id = queue.shift()
+  const bfsQueue = ['root']
+  while (bfsQueue.length > 0) {
+    const id = bfsQueue.shift()
     if (reachable.has(id)) continue
     reachable.add(id)
     const node = nodes[id]
     if (!node) continue
     for (const opt of (node.options || [])) {
-      if (opt.nextId) queue.push(opt.nextId)
+      if (opt.nextId) bfsQueue.push(opt.nextId)
     }
   }
 
+  // ─── DFS cycle detection ─────────────────────────────────────────────────
+  // Track the current recursion path to detect back-edges (cycles)
+  const cycleNodes = new Set()
+  const dfsVisited = new Set()
+
+  function dfs(id, onPath) {
+    if (onPath.has(id)) { cycleNodes.add(id); return }
+    if (dfsVisited.has(id)) return
+    dfsVisited.add(id)
+    onPath.add(id)
+    const node = nodes[id]
+    for (const opt of (node?.options || [])) {
+      if (opt.nextId) dfs(opt.nextId, onPath)
+    }
+    onPath.delete(id)
+  }
+  dfs('root', new Set())
+
+  if (cycleNodes.size > 0) {
+    errors.push(`Cycle detected involving node(s): ${[...cycleNodes].join(', ')}. The wizard would loop infinitely.`)
+  }
+
+  // ─── Per-node checks ─────────────────────────────────────────────────────
   for (const [id, node] of Object.entries(nodes)) {
-    // Broken nextId references
+    // Broken / missing nextId references
     if (node.options) {
       for (const opt of node.options) {
         if (!opt.nextId) {
@@ -33,6 +56,16 @@ function validate(nodes) {
         } else if (!nodes[opt.nextId]) {
           errors.push(`Node "${id}" references missing node "${opt.nextId}".`)
         }
+      }
+
+      // Duplicate nextId within the same node (likely a copy-paste mistake)
+      const seen = new Set()
+      for (const opt of node.options) {
+        if (opt.nextId && seen.has(opt.nextId)) {
+          warnings.push(`Node "${id}" has two options pointing to "${opt.nextId}" — possible duplicate.`)
+          break
+        }
+        seen.add(opt.nextId)
       }
     }
 

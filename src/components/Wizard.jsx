@@ -1,6 +1,65 @@
 import { useState, useRef, useEffect } from 'react';
 import './Wizard.css';
 
+// ─── URL hash + localStorage helpers ─────────────────────────────────────────
+
+function buildHistoryFromChoices(nodes, choices) {
+  const history = [nodes.root]
+  for (const choiceIdx of choices) {
+    const current = history[history.length - 1]
+    if (!current.options || current.type !== 'decision') break
+    const opt = current.options[choiceIdx]
+    if (!opt || !nodes[opt.nextId]) break
+    history.push(nodes[opt.nextId])
+  }
+  return history
+}
+
+function getInitialState(nodes, treeKey) {
+  // URL hash takes priority (shareable links)
+  const hash = window.location.hash.slice(1)
+  if (hash) {
+    const colonIdx = hash.indexOf(':')
+    if (colonIdx !== -1 && hash.slice(0, colonIdx) === treeKey) {
+      const raw = hash.slice(colonIdx + 1)
+      if (raw) {
+        const choices = raw.split(',').map(Number).filter(n => !isNaN(n))
+        const history = buildHistoryFromChoices(nodes, choices)
+        if (history.length > 1) {
+          return { history, choices: choices.slice(0, history.length - 1) }
+        }
+      }
+    }
+  }
+  // Fall back to localStorage
+  try {
+    const saved = localStorage.getItem(`bacterial-id-${treeKey}-path`)
+    if (saved) {
+      const choices = JSON.parse(saved)
+      if (Array.isArray(choices) && choices.length > 0) {
+        const history = buildHistoryFromChoices(nodes, choices)
+        if (history.length > 1) {
+          return { history, choices: choices.slice(0, history.length - 1) }
+        }
+      }
+    }
+  } catch {}
+  return { history: [nodes.root], choices: [] }
+}
+
+function saveState(treeKey, newChoices) {
+  window.location.hash = newChoices.length > 0 ? `${treeKey}:${newChoices.join(',')}` : ''
+  try {
+    if (newChoices.length > 0) {
+      localStorage.setItem(`bacterial-id-${treeKey}-path`, JSON.stringify(newChoices))
+    } else {
+      localStorage.removeItem(`bacterial-id-${treeKey}-path`)
+    }
+  } catch {}
+}
+
+// ─── Progress bar ─────────────────────────────────────────────────────────────
+
 function StepsRemaining({ current, stepsDone, getStepsRemaining }) {
   if (current.type === 'result') {
     return (
@@ -45,42 +104,66 @@ function StepsRemaining({ current, stepsDone, getStepsRemaining }) {
   );
 }
 
-export default function Wizard({ wizardData }) {
+// ─── Main Wizard component ────────────────────────────────────────────────────
+
+export default function Wizard({ wizardData, treeKey }) {
   const { nodes, getStepsRemaining } = wizardData;
-  const [history, setHistory] = useState([nodes['root']]);
   const cardTitleRef = useRef(null);
+
+  const [{ history, choices }, setState] = useState(
+    () => getInitialState(nodes, treeKey)
+  );
 
   const current = history[history.length - 1];
   const stepsDone = history.length - 1;
 
-  // Move focus to the card heading whenever the current node changes.
-  // tabIndex={-1} lets us focus it programmatically; :focus-visible won't
-  // show an outline here (not keyboard-initiated), keeping visuals clean.
   useEffect(() => {
     cardTitleRef.current?.focus();
   }, [current.id]);
 
-  function handleOption(opt) {
+  function handleOption(opt, optIdx) {
     const next = nodes[opt.nextId];
     if (!next) return;
-    setHistory([...history, next]);
+    const newHistory = [...history, next];
+    const newChoices = [...choices, optIdx];
+    setState({ history: newHistory, choices: newChoices });
+    saveState(treeKey, newChoices);
   }
 
   function handleBack() {
     if (history.length <= 1) return;
-    setHistory(history.slice(0, -1));
+    const newHistory = history.slice(0, -1);
+    const newChoices = choices.slice(0, -1);
+    setState({ history: newHistory, choices: newChoices });
+    saveState(treeKey, newChoices);
+  }
+
+  function handleBreadcrumb(stepIdx) {
+    const newHistory = history.slice(0, stepIdx + 1);
+    const newChoices = choices.slice(0, stepIdx);
+    setState({ history: newHistory, choices: newChoices });
+    saveState(treeKey, newChoices);
   }
 
   function handleReset() {
-    setHistory([nodes['root']]);
+    setState({ history: [nodes.root], choices: [] });
+    window.location.hash = '';
+    try { localStorage.removeItem(`bacterial-id-${treeKey}-path`); } catch {}
+  }
+
+  // Share: copy current URL (with hash) to clipboard
+  function handleShare() {
+    navigator.clipboard?.writeText(window.location.href).then(() => {
+      alert('Link copied to clipboard!');
+    }).catch(() => {
+      prompt('Copy this link to share your current position:', window.location.href);
+    });
   }
 
   return (
     <div className="wizard">
-      {/* Steps remaining */}
       <StepsRemaining current={current} stepsDone={stepsDone} getStepsRemaining={getStepsRemaining} />
 
-      {/* Breadcrumb — helps screen readers & keyboard users retrace steps */}
       <nav className="wizard-breadcrumb" aria-label="Identification path">
         <ol className="breadcrumb-list">
           {history.map((node, i) => (
@@ -89,7 +172,7 @@ export default function Wizard({ wizardData }) {
                 <>
                   <button
                     className="breadcrumb-btn"
-                    onClick={() => setHistory(history.slice(0, i + 1))}
+                    onClick={() => handleBreadcrumb(i)}
                     aria-label={`Go back to ${node.label}`}
                   >
                     {node.label}
@@ -104,14 +187,12 @@ export default function Wizard({ wizardData }) {
         </ol>
       </nav>
 
-      {/* Current node card */}
       <div
         className={`wizard-card ${current.type === 'result' ? 'result-card' : ''}`}
         aria-labelledby="card-title"
       >
         <div className="card-header">
           {current.type === 'result' ? (
-            /* Shape + label — color is NOT the only differentiator (WCAG 1.4.1) */
             <span className="badge badge-result" aria-label="Organism identified">
               <span aria-hidden="true">✓</span> Organism Identified
             </span>
@@ -120,7 +201,6 @@ export default function Wizard({ wizardData }) {
               <span aria-hidden="true">⬡</span> Test
             </span>
           )}
-          {/* tabIndex={-1}: programmatic focus target; not in tab order */}
           <h2
             id="card-title"
             className="card-title"
@@ -145,7 +225,7 @@ export default function Wizard({ wizardData }) {
                 <button
                   key={i}
                   className="option-btn"
-                  onClick={() => handleOption(opt)}
+                  onClick={() => handleOption(opt, i)}
                 >
                   {opt.label}
                 </button>
@@ -161,7 +241,6 @@ export default function Wizard({ wizardData }) {
         )}
       </div>
 
-      {/* Navigation */}
       <div className="wizard-nav">
         <button
           className="nav-btn secondary"
@@ -178,6 +257,24 @@ export default function Wizard({ wizardData }) {
         >
           Start Over
         </button>
+        {stepsDone > 0 && (
+          <button
+            className="nav-btn secondary share-btn"
+            onClick={handleShare}
+            aria-label="Copy shareable link to this position"
+          >
+            Share Link
+          </button>
+        )}
+        {current.type === 'result' && (
+          <button
+            className="nav-btn secondary print-btn"
+            onClick={() => window.print()}
+            aria-label="Print or save result as PDF"
+          >
+            Print / Save PDF
+          </button>
+        )}
       </div>
     </div>
   );

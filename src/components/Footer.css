@@ -3,6 +3,13 @@
   padding: 1rem 1.5rem;
   display: flex;
   justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.footer-version {
+  font-size: 0.75rem;
+  color: var(--color-muted);
 }
 
 .footer-link {

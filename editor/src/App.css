@@ -21,10 +21,22 @@ body {
   gap: 1rem;
 }
 
+.header-left {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+}
+
 .app-header h1 {
   margin: 0;
   font-size: 1.1rem;
   font-weight: 600;
+}
+
+.app-version {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.5);
+  font-weight: 400;
 }
 
 .header-controls {
@@ -58,6 +70,27 @@ body {
 
 .tree-toggle button:hover:not(.active) {
   background: rgba(255,255,255,0.1);
+}
+
+.undo-redo {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.undo-redo .btn {
+  background: rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.85);
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+.undo-redo .btn:hover:not(:disabled) {
+  background: rgba(255,255,255,0.2);
+  color: white;
+}
+
+.undo-redo .btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
 }
 
 .export-btn {

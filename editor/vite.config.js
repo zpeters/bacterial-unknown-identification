@@ -15,6 +15,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@data': path.resolve(__dirname, '../src/data'),
+      '@version': path.resolve(__dirname, '../src/version.js'),
     },
   },
 })

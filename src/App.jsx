@@ -28,8 +28,18 @@ const WIZARD_DATA = {
 };
 
 export default function App() {
-  const [activeWizard, setActiveWizard] = useState('gram-positive');
+  const [activeWizard, setActiveWizard] = useState(() => {
+    // Restore active tree from URL hash on first load
+    const hash = window.location.hash.slice(1);
+    const key = hash.split(':')[0];
+    return WIZARD_DATA[key] ? key : 'gram-positive';
+  });
   const [exportOpen, setExportOpen] = useState(false);
+
+  function handleWizardChange(key) {
+    window.location.hash = '';
+    setActiveWizard(key);
+  }
 
   const wizardData = WIZARD_DATA[activeWizard];
 
@@ -38,13 +48,13 @@ export default function App() {
       <a href="#main-content" className="skip-nav">Skip to main content</a>
       <NavBar
         activeWizard={activeWizard}
-        onWizardChange={setActiveWizard}
+        onWizardChange={handleWizardChange}
         onExport={() => setExportOpen(true)}
       />
 
       <main id="main-content" className="app-main">
         {/* key forces full remount (and state reset) when wizard type changes */}
-        <Wizard key={activeWizard} wizardData={wizardData} />
+        <Wizard key={activeWizard} wizardData={wizardData} treeKey={activeWizard} />
       </main>
 
       {exportOpen && (

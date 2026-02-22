@@ -1,3 +1,4 @@
+import { VERSION } from '../version.js';
 import './Footer.css';
 
 export default function Footer() {
@@ -14,6 +15,7 @@ export default function Footer() {
         </svg>
         View on GitHub
       </a>
+      <span className="footer-version">v{VERSION}</span>
     </footer>
   );
 }

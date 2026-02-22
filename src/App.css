@@ -90,3 +90,22 @@ html.dark .react-flow__edge-label {
   margin: 0 auto;
   padding: 2rem 1.5rem;
 }
+
+/* ─── Print styles ─── */
+
+@media print {
+  .navbar,
+  .app-footer,
+  .skip-nav {
+    display: none !important;
+  }
+
+  .app-main {
+    padding: 0.5rem;
+    max-width: none;
+  }
+
+  .app {
+    background: white;
+  }
+}

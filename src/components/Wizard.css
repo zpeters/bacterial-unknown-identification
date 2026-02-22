@@ -264,6 +264,34 @@
   cursor: not-allowed;
 }
 
+/* ─── Share / Print buttons ─── */
+
+.share-btn,
+.print-btn {
+  margin-left: auto;
+}
+
+/* ─── Print styles ─── */
+
+@media print {
+  .wizard-nav,
+  .wizard-breadcrumb,
+  .progress-bar-wrapper {
+    display: none !important;
+  }
+
+  .wizard {
+    max-width: none;
+    padding: 0;
+  }
+
+  .wizard-card {
+    box-shadow: none;
+    border: 1px solid #ccc;
+    break-inside: avoid;
+  }
+}
+
 /* ─── Mobile ─── */
 
 @media (max-width: 480px) {

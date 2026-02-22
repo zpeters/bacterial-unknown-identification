@@ -1,6 +1,7 @@
-import { useState, useCallback, useRef } from 'react'
+import { useState, useCallback, useRef, useEffect } from 'react'
 import { nodes as gpNodes } from '@data/gramPositive.js'
 import { nodes as gnNodes } from '@data/gramNegative.js'
+import { VERSION } from '@version'
 import NodeList from './components/NodeList.jsx'
 import NodeForm from './components/NodeForm.jsx'
 import TreePreview from './components/TreePreview.jsx'
@@ -12,13 +13,130 @@ function deepClone(obj) {
   return JSON.parse(JSON.stringify(obj))
 }
 
+const MAX_HISTORY = 50
+
 export default function App() {
   const [gramPosNodes, setGramPosNodes] = useState(() => deepClone(gpNodes))
   const [gramNegNodes, setGramNegNodes] = useState(() => deepClone(gnNodes))
   const [activeTree, setActiveTree] = useState('pos') // 'pos' | 'neg'
   const [selectedId, setSelectedId] = useState('root')
   const [previewWidth, setPreviewWidth] = useState(340)
+  const [canUndo, setCanUndo] = useState(false)
+  const [canRedo, setCanRedo] = useState(false)
   const dragRef = useRef(null)
+
+  // Undo/redo stacks — arrays of { gramPosNodes, gramNegNodes } snapshots
+  const undoStack = useRef([])
+  const redoStack = useRef([])
+  // Always-current snapshot for reading before mutation
+  const currentStateRef = useRef({ gramPosNodes, gramNegNodes })
+  currentStateRef.current = { gramPosNodes, gramNegNodes }
+
+  const nodes = activeTree === 'pos' ? gramPosNodes : gramNegNodes
+  const setNodes = activeTree === 'pos' ? setGramPosNodes : setGramNegNodes
+
+  // ─── Undo/redo ──────────────────────────────────────────────────────────────
+
+  const beforeMutation = useCallback(() => {
+    undoStack.current.push(currentStateRef.current)
+    if (undoStack.current.length > MAX_HISTORY) undoStack.current.shift()
+    redoStack.current = []
+    setCanUndo(true)
+    setCanRedo(false)
+  }, [])
+
+  const undo = useCallback(() => {
+    if (undoStack.current.length === 0) return
+    const prev = undoStack.current.pop()
+    redoStack.current.unshift(currentStateRef.current)
+    setGramPosNodes(prev.gramPosNodes)
+    setGramNegNodes(prev.gramNegNodes)
+    setCanUndo(undoStack.current.length > 0)
+    setCanRedo(true)
+  }, [])
+
+  const redo = useCallback(() => {
+    if (redoStack.current.length === 0) return
+    const next = redoStack.current.shift()
+    undoStack.current.push(currentStateRef.current)
+    setGramPosNodes(next.gramPosNodes)
+    setGramNegNodes(next.gramNegNodes)
+    setCanUndo(true)
+    setCanRedo(redoStack.current.length > 0)
+  }, [])
+
+  useEffect(() => {
+    function onKeyDown(e) {
+      if (!(e.ctrlKey || e.metaKey)) return
+      if (e.key === 'z' && !e.shiftKey) { e.preventDefault(); undo() }
+      if (e.key === 'y' || (e.key === 'z' && e.shiftKey)) { e.preventDefault(); redo() }
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [undo, redo])
+
+  // ─── Mutations ───────────────────────────────────────────────────────────────
+
+  const updateNode = useCallback((id, partial) => {
+    beforeMutation()
+    setNodes(prev => ({
+      ...prev,
+      [id]: { ...prev[id], ...partial },
+    }))
+  }, [setNodes, beforeMutation])
+
+  const addNode = useCallback(() => {
+    const id = `node_${Date.now()}`
+    const newNode = {
+      id,
+      type: 'result',
+      label: 'New Node',
+      description: '',
+      organism: '',
+    }
+    beforeMutation()
+    setNodes(prev => ({ ...prev, [id]: newNode }))
+    setSelectedId(id)
+  }, [setNodes, beforeMutation])
+
+  const deleteNode = useCallback((id) => {
+    beforeMutation()
+    setNodes(prev => {
+      const next = { ...prev }
+      delete next[id]
+      for (const node of Object.values(next)) {
+        if (node.options) {
+          node.options = node.options.map(opt =>
+            opt.nextId === id ? { ...opt, nextId: '' } : opt
+          )
+        }
+      }
+      return next
+    })
+    setSelectedId(prev => prev === id ? 'root' : prev)
+  }, [setNodes, beforeMutation])
+
+  const renameNodeId = useCallback((oldId, newId) => {
+    beforeMutation()
+    setNodes(prev => {
+      if (prev[newId]) return prev
+      const next = {}
+      for (const [k, node] of Object.entries(prev)) {
+        const key = k === oldId ? newId : k
+        const updated = { ...node, id: node.id === oldId ? newId : node.id }
+        if (updated.options) {
+          updated.options = updated.options.map(opt =>
+            opt.nextId === oldId ? { ...opt, nextId: newId } : opt
+          )
+        }
+        next[key] = updated
+      }
+      return next
+    })
+    setSelectedId(prev => prev === oldId ? newId : prev)
+  }, [setNodes, beforeMutation])
+
+  // ─── Resizable divider ────────────────────────────────────────────────────
 
   function onDividerMouseDown(e) {
     e.preventDefault()
@@ -41,67 +159,7 @@ export default function App() {
     window.addEventListener('mouseup', onMouseUp)
   }
 
-  const nodes = activeTree === 'pos' ? gramPosNodes : gramNegNodes
-  const setNodes = activeTree === 'pos' ? setGramPosNodes : setGramNegNodes
-
-  // Update a single node by id (merges partial fields)
-  const updateNode = useCallback((id, partial) => {
-    setNodes(prev => ({
-      ...prev,
-      [id]: { ...prev[id], ...partial },
-    }))
-  }, [setNodes])
-
-  // Add a new blank result node
-  const addNode = useCallback(() => {
-    const id = `node_${Date.now()}`
-    const newNode = {
-      id,
-      type: 'result',
-      label: 'New Node',
-      description: '',
-      organism: '',
-    }
-    setNodes(prev => ({ ...prev, [id]: newNode }))
-    setSelectedId(id)
-  }, [setNodes])
-
-  // Delete a node and strip all references to it from option nextId fields
-  const deleteNode = useCallback((id) => {
-    setNodes(prev => {
-      const next = { ...prev }
-      delete next[id]
-      // Strip references
-      for (const node of Object.values(next)) {
-        if (node.options) {
-          node.options = node.options
-            .map(opt => opt.nextId === id ? { ...opt, nextId: '' } : opt)
-        }
-      }
-      return next
-    })
-    setSelectedId(prev => prev === id ? 'root' : prev)
-  }, [setNodes])
-
-  // Rename a node's id and cascade to all nextId references
-  const renameNodeId = useCallback((oldId, newId) => {
-    setNodes(prev => {
-      if (prev[newId]) return prev // duplicate — skip
-      const next = {}
-      for (const [k, node] of Object.entries(prev)) {
-        const key = k === oldId ? newId : k
-        const updated = { ...node, id: node.id === oldId ? newId : node.id }
-        if (updated.options) {
-          updated.options = updated.options.map(opt =>
-            opt.nextId === oldId ? { ...opt, nextId: newId } : opt
-          )
-        }
-        next[key] = updated
-      }
-      return next
-    })
-    setSelectedId(prev => prev === oldId ? newId : prev)
-  }, [setNodes])
+  // ─── Export ───────────────────────────────────────────────────────────────
 
   function handleExport() {
     try {
@@ -116,8 +174,29 @@ export default function App() {
   return (
     <div className="app">
       <header className="app-header">
-        <h1>Bacterial ID Tree Editor</h1>
+        <div className="header-left">
+          <h1>Bacterial ID Tree Editor</h1>
+          <span className="app-version">v{VERSION}</span>
+        </div>
         <div className="header-controls">
+          <div className="undo-redo">
+            <button
+              className="btn btn-ghost btn-sm"
+              onClick={undo}
+              disabled={!canUndo}
+              title="Undo (Ctrl+Z)"
+            >
+              ↩ Undo
+            </button>
+            <button
+              className="btn btn-ghost btn-sm"
+              onClick={redo}
+              disabled={!canRedo}
+              title="Redo (Ctrl+Y)"
+            >
+              Redo ↪
+            </button>
+          </div>
           <div className="tree-toggle">
             <button
               className={activeTree === 'pos' ? 'active' : ''}
