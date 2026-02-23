@@ -81,7 +81,7 @@ export default function NodeForm({ node, allNodes, onUpdate, onDelete, onRename 
         <input
           value={pendingId}
           className={idError ? 'error' : ''}
-          onChange={e => { setPendingId(e.target.value); setIdError('') }}
+          onChange={e => { setPendingId(e.target.value.replace(/[^a-zA-Z0-9_]/g, '_')); setIdError('') }}
           onBlur={handleIdBlur}
           disabled={node.id === 'root'}
         />

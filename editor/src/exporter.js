@@ -6,7 +6,7 @@ function esc(str) {
 
 function serializeNode(node) {
   const lines = []
-  lines.push(`  ${node.id}: {`)
+  lines.push(`  '${esc(node.id)}': {`)
   lines.push(`    id: '${esc(node.id)}',`)
   lines.push(`    type: '${esc(node.type)}',`)
   lines.push(`    label: '${esc(node.label)}',`)
