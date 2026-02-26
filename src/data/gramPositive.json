@@ -1,0 +1,308 @@
+{
+  "root": {
+    "id": "root",
+    "type": "decision",
+    "label": "Cell Morphology",
+    "description": "After confirming Gram positive stain, determine the shape of the cells under the microscope.",
+    "question": "What is the cell morphology of your Gram positive organism?",
+    "options": [
+      {
+        "label": "Cocci (spherical)",
+        "nextId": "catalase"
+      },
+      {
+        "label": "Rods (bacilli)",
+        "nextId": "spore"
+      }
+    ]
+  },
+  "catalase": {
+    "id": "catalase",
+    "type": "decision",
+    "label": "Catalase Test",
+    "description": "Add a drop of 3% hydrogen peroxide to a colony. Bubbling (O₂ release) = positive. Catalase breaks down H₂O₂ into water and oxygen.",
+    "question": "What is the result of the catalase test?",
+    "options": [
+      {
+        "label": "Positive (+) — bubbles",
+        "nextId": "coagulase"
+      },
+      {
+        "label": "Negative (−) — no bubbles",
+        "nextId": "hemolysis"
+      }
+    ]
+  },
+  "coagulase": {
+    "id": "coagulase",
+    "type": "decision",
+    "label": "Coagulase Test",
+    "description": "Mix colony with rabbit plasma. Clot formation = positive. Coagulase-positive staphylococci can clot fibrinogen.",
+    "question": "What is the result of the coagulase test?",
+    "options": [
+      {
+        "label": "Positive (+) — clot forms",
+        "nextId": "result_aureus"
+      },
+      {
+        "label": "Negative (−) — no clot",
+        "nextId": "novobiocin"
+      }
+    ]
+  },
+  "result_aureus": {
+    "id": "result_aureus",
+    "type": "result",
+    "label": "Staphylococcus aureus",
+    "description": "Gram positive, catalase positive, coagulase positive. A major human pathogen; causes skin infections, pneumonia, endocarditis, and toxic shock syndrome. Often displays golden-yellow colonies.",
+    "organism": "Staphylococcus aureus"
+  },
+  "novobiocin": {
+    "id": "novobiocin",
+    "type": "decision",
+    "label": "Novobiocin Sensitivity",
+    "description": "Place a novobiocin disk on the plate. A zone of inhibition ≥ 16 mm = sensitive. Differentiates coagulase-negative Staphylococcus species.",
+    "question": "What is the result of the novobiocin sensitivity test?",
+    "options": [
+      {
+        "label": "Sensitive (zone ≥ 16 mm)",
+        "nextId": "result_epidermidis"
+      },
+      {
+        "label": "Resistant (zone < 16 mm)",
+        "nextId": "result_saprophyticus"
+      }
+    ]
+  },
+  "result_epidermidis": {
+    "id": "result_epidermidis",
+    "type": "result",
+    "label": "Staphylococcus epidermidis",
+    "description": "Gram positive, catalase positive, coagulase negative, novobiocin sensitive. Common skin commensal; clinically significant in immunocompromised patients and prosthetic device infections.",
+    "organism": "Staphylococcus epidermidis"
+  },
+  "result_saprophyticus": {
+    "id": "result_saprophyticus",
+    "type": "result",
+    "label": "Staphylococcus saprophyticus",
+    "description": "Gram positive, catalase positive, coagulase negative, novobiocin resistant. Common cause of urinary tract infections in young sexually active women.",
+    "organism": "Staphylococcus saprophyticus"
+  },
+  "hemolysis": {
+    "id": "hemolysis",
+    "type": "decision",
+    "label": "Hemolysis on Blood Agar",
+    "description": "Observe colony growth on sheep blood agar. Alpha (α) = partial/green hemolysis. Beta (β) = complete clear hemolysis. Gamma (γ) = no hemolysis.",
+    "question": "What type of hemolysis is observed on blood agar?",
+    "options": [
+      {
+        "label": "Alpha (α) — partial/green zone",
+        "nextId": "optochin"
+      },
+      {
+        "label": "Beta (β) — complete clear zone",
+        "nextId": "bacitracin"
+      },
+      {
+        "label": "Gamma (γ) — no hemolysis",
+        "nextId": "bile_esculin"
+      }
+    ]
+  },
+  "optochin": {
+    "id": "optochin",
+    "type": "decision",
+    "label": "Optochin Sensitivity",
+    "description": "Place an optochin (P) disk on the plate. Zone of inhibition ≥ 14 mm = sensitive. Optochin differentiates S. pneumoniae from viridans streptococci.",
+    "question": "What is the result of the optochin sensitivity test?",
+    "options": [
+      {
+        "label": "Sensitive (zone ≥ 14 mm)",
+        "nextId": "result_pneumoniae"
+      },
+      {
+        "label": "Resistant (zone < 14 mm)",
+        "nextId": "result_viridans"
+      }
+    ]
+  },
+  "result_pneumoniae": {
+    "id": "result_pneumoniae",
+    "type": "result",
+    "label": "Streptococcus pneumoniae",
+    "description": "Gram positive, catalase negative, alpha hemolytic, optochin sensitive. Leading cause of community-acquired pneumonia, meningitis, and otitis media. Colonies are characteristically lancet-shaped diplococci.",
+    "organism": "Streptococcus pneumoniae"
+  },
+  "result_viridans": {
+    "id": "result_viridans",
+    "type": "result",
+    "label": "Viridans Streptococci",
+    "description": "Gram positive, catalase negative, alpha hemolytic, optochin resistant. A diverse group of streptococci; normal oral flora. Can cause subacute bacterial endocarditis in susceptible patients.",
+    "organism": "Viridans Streptococci"
+  },
+  "bacitracin": {
+    "id": "bacitracin",
+    "type": "decision",
+    "label": "Bacitracin Sensitivity",
+    "description": "Place a bacitracin (A) disk on the plate. Any zone of inhibition = sensitive. Differentiates Group A from Group B Streptococcus.",
+    "question": "What is the result of the bacitracin sensitivity test?",
+    "options": [
+      {
+        "label": "Sensitive (any zone)",
+        "nextId": "result_pyogenes"
+      },
+      {
+        "label": "Resistant (no zone)",
+        "nextId": "result_agalactiae"
+      }
+    ]
+  },
+  "result_pyogenes": {
+    "id": "result_pyogenes",
+    "type": "result",
+    "label": "Streptococcus pyogenes",
+    "description": "Gram positive, catalase negative, beta hemolytic, bacitracin sensitive. Group A Streptococcus. Causes strep throat, impetigo, scarlet fever, and rheumatic fever. PYR positive.",
+    "organism": "Streptococcus pyogenes (Group A)"
+  },
+  "result_agalactiae": {
+    "id": "result_agalactiae",
+    "type": "result",
+    "label": "Streptococcus agalactiae",
+    "description": "Gram positive, catalase negative, beta hemolytic, bacitracin resistant. Group B Streptococcus. Important cause of neonatal meningitis and sepsis; screened in pregnant women.",
+    "organism": "Streptococcus agalactiae (Group B)"
+  },
+  "bile_esculin": {
+    "id": "bile_esculin",
+    "type": "decision",
+    "label": "Bile Esculin + 6.5% NaCl Tolerance",
+    "description": "Bile esculin agar: darkening = positive. 6.5% NaCl broth: turbidity = growth. Enterococci are bile esculin positive AND salt tolerant.",
+    "question": "Are both bile esculin AND 6.5% NaCl tests positive?",
+    "options": [
+      {
+        "label": "Both positive",
+        "nextId": "result_enterococcus"
+      },
+      {
+        "label": "One or both negative",
+        "nextId": "result_strep_group_d"
+      }
+    ]
+  },
+  "result_enterococcus": {
+    "id": "result_enterococcus",
+    "type": "result",
+    "label": "Enterococcus spp.",
+    "description": "Gram positive, catalase negative, gamma hemolytic, bile esculin positive, salt tolerant. Common in the GI tract; causes UTIs and endocarditis. Notorious for antibiotic resistance (VRE).",
+    "organism": "Enterococcus spp."
+  },
+  "result_strep_group_d": {
+    "id": "result_strep_group_d",
+    "type": "result",
+    "label": "Non-enterococcal Group D Streptococcus",
+    "description": "Gram positive, catalase negative, gamma hemolytic, bile esculin positive but NOT salt tolerant (6.5% NaCl negative). Includes S. bovis / S. gallolyticus. Associated with colorectal carcinoma.",
+    "organism": "S. bovis / S. gallolyticus"
+  },
+  "spore": {
+    "id": "spore",
+    "type": "decision",
+    "label": "Endospore Stain",
+    "description": "Find the endospore stain procedure in the lab manual. We will use the microwave proceedure.",
+    "question": "Are endospores present in the rod-shaped organism?",
+    "options": [
+      {
+        "label": "Spores present",
+        "nextId": "oxygen"
+      },
+      {
+        "label": "No spores",
+        "nextId": "acid_fast"
+      }
+    ]
+  },
+  "oxygen": {
+    "id": "oxygen",
+    "type": "decision",
+    "label": "Oxygen Requirements",
+    "description": "If an organism is strictly anaerobic, it will not grow in the presence of oxygen. ",
+    "question": "What are the oxygen requirements of the spore-forming rod?",
+    "options": [
+      {
+        "label": "Aerobic / Facultative",
+        "nextId": "result_bacillus"
+      },
+      {
+        "label": "Strictly Anaerobic",
+        "nextId": "result_clostridium"
+      }
+    ]
+  },
+  "result_bacillus": {
+    "id": "result_bacillus",
+    "type": "result",
+    "label": "Bacillus spp.",
+    "description": "Gram positive, endospore-forming, aerobic rod. Includes B. anthracis (anthrax), B. cereus (food poisoning), and B. subtilis (common lab saprophyte). Spores are highly resistant to heat and chemicals.",
+    "organism": "Bacillus spp."
+  },
+  "result_clostridium": {
+    "id": "result_clostridium",
+    "type": "result",
+    "label": "Clostridium spp.",
+    "description": "Gram positive, endospore-forming, anaerobic rod. Includes C. difficile (antibiotic-associated colitis), C. botulinum (botulism), C. tetani (tetanus), and C. perfringens (gas gangrene).",
+    "organism": "Clostridium spp."
+  },
+  "acid_fast": {
+    "id": "acid_fast",
+    "type": "decision",
+    "label": "Acid Fast Stain",
+    "description": "",
+    "question": "",
+    "options": [
+      {
+        "label": "Motile (tumbling)",
+        "nextId": "result_listeria"
+      },
+      {
+        "label": "Non-motile",
+        "nextId": "catalase_rod"
+      }
+    ]
+  },
+  "result_listeria": {
+    "id": "result_listeria",
+    "type": "result",
+    "label": "Listeria monocytogenes",
+    "description": "Gram positive, non-spore-forming, motile rod (tumbling motility at 25°C). Causes listeriosis; particularly dangerous in pregnant women, neonates, and immunocompromised individuals. Cold tolerant — grows in refrigerator temperatures.",
+    "organism": "Listeria monocytogenes"
+  },
+  "catalase_rod": {
+    "id": "catalase_rod",
+    "type": "decision",
+    "label": "Catalase Test",
+    "description": "Find the catalase test in the lab manual. We will use the slide method.",
+    "question": "Is the organism catalase positive or negative?",
+    "options": [
+      {
+        "label": "Positive (+) — bubbles",
+        "nextId": "result_corynebacterium"
+      },
+      {
+        "label": "Negative (−) — no bubbles",
+        "nextId": "result_lactobacillus"
+      }
+    ]
+  },
+  "result_corynebacterium": {
+    "id": "result_corynebacterium",
+    "type": "result",
+    "label": "Corynebacterium spp.",
+    "description": "Gram positive, non-spore-forming, non-motile, catalase positive rod. Characteristically club-shaped (\"Chinese letter\" arrangement). C. diphtheriae causes diphtheria; C. jeikeium is a nosocomial pathogen.",
+    "organism": "Corynebacterium spp."
+  },
+  "result_lactobacillus": {
+    "id": "result_lactobacillus",
+    "type": "result",
+    "label": "Lactobacillus spp.",
+    "description": "Gram positive, non-spore-forming, non-motile, catalase negative rod. Normal flora of the vagina and GI tract. Produces lactic acid; important in fermentation. Generally low pathogenicity.",
+    "organism": "Lactobacillus spp."
+  }
+}

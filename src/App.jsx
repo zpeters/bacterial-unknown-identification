@@ -3,8 +3,9 @@ import NavBar from './components/NavBar';
 import Wizard from './components/Wizard';
 import ExportModal from './components/ExportModal';
 import Footer from './components/Footer';
-import { nodes as gramPosNodes, getStepsRemaining as gramPosSteps, getEdges as gramPosEdges } from './data/gramPositive';
-import { nodes as gramNegNodes, getStepsRemaining as gramNegSteps, getEdges as gramNegEdges } from './data/gramNegative';
+import gramPosNodes from './data/gramPositive.json';
+import gramNegNodes from './data/gramNegative.json';
+import { createStepsRemainingFn, createEdgesFn } from './data/treeUtils';
 import './App.css';
 
 const WIZARD_DATA = {
@@ -12,18 +13,18 @@ const WIZARD_DATA = {
     key: 'gram-positive',
     title: 'Gram Positive',
     nodes: gramPosNodes,
-    getStepsRemaining: gramPosSteps,
+    getStepsRemaining: createStepsRemainingFn(gramPosNodes),
     // FlowChart needs these two
     dataNodes: gramPosNodes,
-    getEdgesFn: gramPosEdges,
+    getEdgesFn: createEdgesFn(gramPosNodes),
   },
   'gram-negative': {
     key: 'gram-negative',
     title: 'Gram Negative',
     nodes: gramNegNodes,
-    getStepsRemaining: gramNegSteps,
+    getStepsRemaining: createStepsRemainingFn(gramNegNodes),
     dataNodes: gramNegNodes,
-    getEdgesFn: gramNegEdges,
+    getEdgesFn: createEdgesFn(gramNegNodes),
   },
 };
 

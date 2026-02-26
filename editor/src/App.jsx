@@ -1,6 +1,6 @@
 import { useState, useCallback, useRef, useEffect } from 'react'
-import { nodes as gpNodes } from '@data/gramPositive.js'
-import { nodes as gnNodes } from '@data/gramNegative.js'
+import gpNodes from '@data/gramPositive.json'
+import gnNodes from '@data/gramNegative.json'
 import { VERSION } from '@version'
 import NodeList from './components/NodeList.jsx'
 import NodeForm from './components/NodeForm.jsx'
@@ -212,7 +212,7 @@ export default function App() {
             </button>
           </div>
           <button className="export-btn" onClick={handleExport}>
-            Export JS Files
+            Export JSON Files
           </button>
         </div>
       </header>
