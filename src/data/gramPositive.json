@@ -254,25 +254,18 @@
     "id": "acid_fast",
     "type": "decision",
     "label": "Acid Fast Stain",
-    "description": "",
-    "question": "",
+    "description": "Find the acid-fast staining procedure in the lab manual.",
+    "question": "Is the organism acid-fast?",
     "options": [
       {
-        "label": "Motile (tumbling)",
-        "nextId": "result_listeria"
+        "label": "yes",
+        "nextId": "mycobacterium"
       },
       {
-        "label": "Non-motile",
+        "label": "no",
         "nextId": "catalase_rod"
       }
     ]
-  },
-  "result_listeria": {
-    "id": "result_listeria",
-    "type": "result",
-    "label": "Listeria monocytogenes",
-    "description": "Gram positive, non-spore-forming, motile rod (tumbling motility at 25°C). Causes listeriosis; particularly dangerous in pregnant women, neonates, and immunocompromised individuals. Cold tolerant — grows in refrigerator temperatures.",
-    "organism": "Listeria monocytogenes"
   },
   "catalase_rod": {
     "id": "catalase_rod",
@@ -282,27 +275,109 @@
     "question": "Is the organism catalase positive or negative?",
     "options": [
       {
-        "label": "Positive (+) — bubbles",
-        "nextId": "result_corynebacterium"
+        "label": "Positive ",
+        "nextId": "starch_hydrolysis"
       },
       {
-        "label": "Negative (−) — no bubbles",
-        "nextId": "result_lactobacillus"
+        "label": "Negative ",
+        "nextId": "glucose_fermentation"
       }
     ]
   },
-  "result_corynebacterium": {
-    "id": "result_corynebacterium",
+  "mycobacterium": {
+    "id": "mycobacterium",
     "type": "result",
-    "label": "Corynebacterium spp.",
-    "description": "Gram positive, non-spore-forming, non-motile, catalase positive rod. Characteristically club-shaped (\"Chinese letter\" arrangement). C. diphtheriae causes diphtheria; C. jeikeium is a nosocomial pathogen.",
-    "organism": "Corynebacterium spp."
+    "label": "Mycobacterium smegmatis",
+    "description": "Mycobacterium smegmatis: Gram positive rods, endospore negative, acid fast.",
+    "organism": "mycobacterium smegmatis"
   },
-  "result_lactobacillus": {
-    "id": "result_lactobacillus",
+  "glucose_fermentation": {
+    "id": "glucose_fermentation",
+    "type": "decision",
+    "label": "Glucose fermentation Test",
+    "description": "The glucose fermentation test is PART of a series of tests labeled \"Carbohydrates I: Fermentation and beta galactosidase activity\" in you manual. We will use the Durham tube procedure",
+    "organism": "",
+    "question": "is your organism positive for glucose fermentation?",
+    "options": [
+      {
+        "label": "Yes: produces acid and gas",
+        "nextId": "lactobacillus_fermenti"
+      },
+      {
+        "label": "Yes: produces acid only",
+        "nextId": "Mannitol_fermentation_test"
+      }
+    ]
+  },
+  "lactobacillus_fermenti": {
+    "id": "lactobacillus_fermenti",
     "type": "result",
-    "label": "Lactobacillus spp.",
-    "description": "Gram positive, non-spore-forming, non-motile, catalase negative rod. Normal flora of the vagina and GI tract. Produces lactic acid; important in fermentation. Generally low pathogenicity.",
-    "organism": "Lactobacillus spp."
+    "label": "Lactobacillus fermenti",
+    "description": "Lactobacillus fermenti is gram positive, negative for endospores, negative for acid fast staining, negative for catalase activity, and positive for Glucose fermentation, producing acid and gas",
+    "organism": "Lactobacillus fermenti"
+  },
+  "Mannitol_fermentation_test": {
+    "id": "Mannitol_fermentation_test",
+    "type": "decision",
+    "label": "mannitol fermentation test",
+    "description": "The mannitol fermentation test is described within the \"streak plate technique\" test section of your lab manual (exercise 15).",
+    "organism": "",
+    "question": "Does your organism ferment mannitol?",
+    "options": [
+      {
+        "label": "yes",
+        "nextId": "Lactobacillus_casei"
+      },
+      {
+        "label": "no",
+        "nextId": "Lactobacillus_delbrueckii"
+      }
+    ]
+  },
+  "Lactobacillus_casei": {
+    "id": "Lactobacillus_casei",
+    "type": "result",
+    "label": "Lactobacillus casei",
+    "description": "Lactobacillus casei is a gram positive rod that is negative for spores, negative for acid fast stain, negative for catalase activity, produces acid only from glucose fermentation, and is positive for mannitol fermentation",
+    "organism": "Lactobacillus casei"
+  },
+  "Lactobacillus_delbrueckii": {
+    "id": "Lactobacillus_delbrueckii",
+    "type": "result",
+    "label": "Lactobacillus delbrueckii",
+    "description": "Lactobacillus delbrueckii is a gram positive rod that is negative for spore formation, negative for acid fast stain, negative for catalase activity, produces acid only from glucose fermentation, and is negative for mannitol fermentation",
+    "organism": "Lactobacillus delbrueckii"
+  },
+  "starch_hydrolysis": {
+    "id": "starch_hydrolysis",
+    "type": "decision",
+    "label": "starch hydrolysis test",
+    "description": "Find the starch hydrolysis experiment in your lab manual. ",
+    "organism": "",
+    "question": "Does your organism use amylase to hydrolyze starch?",
+    "options": [
+      {
+        "label": "yes",
+        "nextId": "Corynebacterium_kutsceri"
+      },
+      {
+        "label": "no",
+        "nextId": "Corynebacterium_xerosis"
+      }
+    ]
+  },
+  "Corynebacterium_kutsceri": {
+    "id": "Corynebacterium_kutsceri",
+    "type": "result",
+    "label": "Corynebacterium kutsceri",
+    "description": "Corynebacterium kutsceri is a gram positive rod that is negative for spore formation, negative for acid fast staining, positive for catalase activity, and positive for starch hydrolysis",
+    "organism": "Corynebacterium kutsceri"
+  },
+  "Corynebacterium_xerosis": {
+    "id": "Corynebacterium_xerosis",
+    "type": "result",
+    "label": "Corynebacterium xerosis",
+    "description": "Corynebacterium xerosis is a gram positive rod that is negative for spore formation, negative for acid-fast staining, positive for catalase activity, and negative for starch hydrolysis",
+    "organism": "Corynebacterium xerosis"
   }
 }
