@@ -3,8 +3,8 @@
     "id": "root",
     "type": "decision",
     "label": "Cell Morphology",
-    "description": "After confirming Gram negative stain (pink/red), examine cell shape under the microscope.",
-    "question": "What is the cell morphology of your Gram negative organism?",
+    "description": "After confirming Gram negative stain (pink/red), recall the shape of your cells.",
+    "question": "What is the cell morphology (shape) of your Gram negative organism?",
     "options": [
       {
         "label": "Cocci (spherical/oval)",
@@ -86,32 +86,32 @@
     "id": "oxidase_rods",
     "type": "decision",
     "label": "Oxidase Test",
-    "description": "Apply oxidase reagent to a colony. Purple/blue = positive. This single test separates the Enterobacteriaceae (oxidase negative — the largest family of GN rods) from non-fermenters and other gram negative rods.",
+    "description": "Find the oxidase test in your lab manual. There are many ways to test for oxidase acivity, but we will use sterile swabs and Spottest oxidase reagent vials (also known as ampules). you will start the procedure at the \"second period\" since you will have already grown your bacteria on plates.",
     "question": "What is the result of the oxidase test?",
     "options": [
       {
         "label": "Negative (−) — Enterobacteriaceae",
-        "nextId": "lactose"
+        "nextId": "lactose_gneg_oxidase_neg"
       },
       {
         "label": "Positive (+) — Non-Enterobacteriaceae",
-        "nextId": "glucose_of"
+        "nextId": "glucose"
       }
     ]
   },
-  "lactose": {
-    "id": "lactose",
+  "lactose_gneg_oxidase_neg": {
+    "id": "lactose_gneg_oxidase_neg",
     "type": "decision",
-    "label": "Lactose Fermentation (MacConkey)",
-    "description": "Observe colony color on MacConkey agar after 24–48 h. Pink/red colonies = lactose fermenters (acid turns the neutral red indicator). Colorless/translucent = non-fermenters. This is one of the most informative initial screens.",
-    "question": "Does the organism ferment lactose on MacConkey agar?",
+    "label": "Lactose Fermentation ",
+    "description": "The glucose fermentation test is PART of a series of tests labeled \"Carbohydrates I: Fermentation and beta galactosidase activity\" in you manual. We will use the Durham tube procedure.",
+    "question": "Does the organism ferment lactose?",
     "options": [
       {
-        "label": "Positive (+) — pink or red colonies",
+        "label": "yes (produces acid and/or gas)",
         "nextId": "indole"
       },
       {
-        "label": "Negative (−) — colorless colonies",
+        "label": "no (no acid or gas)",
         "nextId": "h2s"
       }
     ]
@@ -120,16 +120,16 @@
     "id": "indole",
     "type": "decision",
     "label": "Indole Test",
-    "description": "Add Kovacs' reagent to a tryptone broth culture. A red ring at the surface = positive. Tests for tryptophanase enzyme, which degrades tryptophan to indole. One of the four IMViC tests.",
-    "question": "What is the result of the indole test?",
+    "description": "The indole test is one of the four IMViC tests, described in exercise 23 in your book. Read the procedure carefully to determine which reagents you need.",
+    "question": "Does your organism produce indole?",
     "options": [
       {
-        "label": "Positive (+) — red ring",
-        "nextId": "result_ecoli"
+        "label": "yes",
+        "nextId": "Citrate_test"
       },
       {
-        "label": "Negative (−) — no ring",
-        "nextId": "urease_kleb"
+        "label": "no",
+        "nextId": "MR_VP"
       }
     ]
   },
@@ -137,156 +137,56 @@
     "id": "result_ecoli",
     "type": "result",
     "label": "Escherichia coli",
-    "description": "Gram negative rod, oxidase negative, lactose fermenter, indole positive. Most common cause of UTIs and gram negative bacteremia. Pathogenic strains cause gastroenteritis (ETEC traveler's diarrhea; EHEC O157:H7 HUS), neonatal meningitis. IMViC: +, +, −, −. Flat metallic green sheen on EMB agar.",
+    "description": "Escherichia coli is a gram negative rod that is oxidase negative, lactose positive, indole positive, and citrate negative.",
     "organism": "Escherichia coli"
-  },
-  "urease_kleb": {
-    "id": "urease_kleb",
-    "type": "decision",
-    "label": "Urease Test",
-    "description": "Inoculate Christensen's urea agar. Pink/magenta color = positive (ammonia raises pH). Differentiates Klebsiella (urease positive) from Enterobacter (urease negative) among indole-negative lactose fermenters.",
-    "question": "What is the result of the urease test?",
-    "options": [
-      {
-        "label": "Positive (+) — pink/magenta",
-        "nextId": "result_klebsiella"
-      },
-      {
-        "label": "Negative (−)",
-        "nextId": "result_enterobacter"
-      }
-    ]
-  },
-  "result_klebsiella": {
-    "id": "result_klebsiella",
-    "type": "result",
-    "label": "Klebsiella pneumoniae",
-    "description": "Gram negative rod, oxidase negative, lactose fermenter, indole negative, urease positive. Non-motile; produces large mucoid colonies (capsule). Causes lobar pneumonia with \"currant jelly\" sputum, UTIs, and bacteremia. IMViC: −, −, +, +. Hypervirulent strains cause liver abscesses.",
-    "organism": "Klebsiella pneumoniae"
-  },
-  "result_enterobacter": {
-    "id": "result_enterobacter",
-    "type": "result",
-    "label": "Enterobacter cloacae",
-    "description": "Gram negative rod, oxidase negative, lactose fermenter, indole negative, urease negative. Motile with peritrichous flagella; VP positive. Opportunistic pathogen in hospitalized patients (UTIs, pneumonia, bacteremia). Intrinsically resistant to ampicillin and 1st/2nd-generation cephalosporins. IMViC: −, −, +, +.",
-    "organism": "Enterobacter cloacae"
   },
   "h2s": {
     "id": "h2s",
     "type": "decision",
-    "label": "H₂S Production (TSI)",
-    "description": "Observe Triple Sugar Iron (TSI) agar after 18–24 h incubation. Black precipitate in butt = H₂S positive (ferrous sulfide). H₂S production results from reduction of sulfur-containing amino acids or thiosulfate.",
-    "question": "Is H₂S produced on TSI agar (black precipitate)?",
+    "label": "hydrogen sulfide (H2S) test",
+    "description": "The hydrogen sulfide test is one of the four IMViC tests, described in exercise 23 in your book. Read the procedure carefully to determine which reagents you need.",
+    "question": "Is H₂S produced?",
     "options": [
       {
-        "label": "Positive (+) — black precipitate",
-        "nextId": "urease_h2s"
+        "label": "yes",
+        "nextId": "Citrobacter_freundii"
       },
       {
-        "label": "Negative (−) — no blackening",
-        "nextId": "motility_gn"
+        "label": "no",
+        "nextId": "motility_enterobac_h2sneg"
       }
     ]
   },
-  "urease_h2s": {
-    "id": "urease_h2s",
-    "type": "decision",
-    "label": "Urease Test",
-    "description": "Inoculate Christensen's urea agar. Pink/magenta = positive. Among H₂S-positive, lactose-negative organisms, urease activity separates Proteus (strongly positive, swarming motility) from Salmonella (urease negative).",
-    "question": "What is the result of the urease test?",
-    "options": [
-      {
-        "label": "Positive (+) — pink/magenta",
-        "nextId": "result_proteus_mirabilis"
-      },
-      {
-        "label": "Negative (−)",
-        "nextId": "result_salmonella"
-      }
-    ]
-  },
-  "result_proteus_mirabilis": {
-    "id": "result_proteus_mirabilis",
-    "type": "result",
-    "label": "Proteus mirabilis",
-    "description": "Gram negative rod, oxidase negative, lactose negative, H₂S positive, strongly urease positive. Characteristically \"swarms\" across blood agar in concentric waves. Causes UTIs (especially catheter-associated); urease activity alkalinizes urine, promoting struvite (staghorn) kidney stones. Ornithine decarboxylase positive.",
-    "organism": "Proteus mirabilis"
-  },
-  "result_salmonella": {
-    "id": "result_salmonella",
-    "type": "result",
-    "label": "Salmonella spp.",
-    "description": "Gram negative rod, oxidase negative, lactose negative, H₂S positive, urease negative. Causes salmonellosis (gastroenteritis from contaminated food) and typhoid fever (S. typhi/paratyphi — rose spots, bradycardia, splenomegaly). Facultative intracellular; survives in macrophages. Notifiable disease.",
-    "organism": "Salmonella spp."
-  },
-  "motility_gn": {
-    "id": "motility_gn",
+  "motility_enterobac_h2sneg": {
+    "id": "motility_enterobac_h2sneg",
     "type": "decision",
     "label": "Motility Test",
-    "description": "Use motility test medium (semi-solid agar) or wet mount. Growth extending from stab line = motile. Shigella is a key organism that is notably non-motile — an important differentiating feature from other GN rods.",
-    "question": "Is the organism motile?",
+    "description": "There are many ways to test for motility - consult with Dr. Hussa to find the best method.",
+    "question": "Is the organism motile? Also, observe the color of the colonies on petri plates to determine if they are red.",
     "options": [
       {
-        "label": "Non-motile",
-        "nextId": "result_shigella"
+        "label": "motile",
+        "nextId": "Serratia_fonticola"
       },
       {
-        "label": "Motile",
-        "nextId": "urease_motile"
+        "label": "nonmotile",
+        "nextId": "Klebsiella_pneumoniae_subsp_ozaenae"
       }
     ]
   },
-  "result_shigella": {
-    "id": "result_shigella",
-    "type": "result",
-    "label": "Shigella spp.",
-    "description": "Gram negative rod, oxidase negative, lactose negative, H₂S negative, non-motile. Causes bacillary dysentery — bloody, mucoid diarrhea with fever. Extremely low infectious dose (~10–100 organisms). Four species: S. dysenteriae (most severe), S. flexneri, S. boydii, S. sonnei (most common in US). Does not produce H₂S or urease.",
-    "organism": "Shigella spp."
-  },
-  "urease_motile": {
-    "id": "urease_motile",
+  "glucose": {
+    "id": "glucose",
     "type": "decision",
-    "label": "Urease Test",
-    "description": "Inoculate Christensen's urea agar. Pink/magenta = positive. Among H₂S-negative, lactose-negative, motile organisms, urease differentiates Proteus vulgaris from Yersinia and other non-H₂S-producing rods.",
-    "question": "What is the result of the urease test?",
+    "label": "Glucose fermentation Test",
+    "description": "The glucose fermentation test is PART of a series of tests labeled \"Carbohydrates I: Fermentation and beta galactosidase activity\" in you manual. We will use the Durham tube procedure.",
+    "question": "Does your organism ferment glucose?",
     "options": [
       {
-        "label": "Positive (+)",
-        "nextId": "result_proteus_vulgaris"
-      },
-      {
-        "label": "Negative (−)",
-        "nextId": "result_yersinia"
-      }
-    ]
-  },
-  "result_proteus_vulgaris": {
-    "id": "result_proteus_vulgaris",
-    "type": "result",
-    "label": "Proteus vulgaris",
-    "description": "Gram negative rod, oxidase negative, lactose negative, H₂S negative, motile, urease positive. Distinguished from P. mirabilis by positive indole and negative ornithine decarboxylase. Causes UTIs and wound infections; less common clinically than P. mirabilis.",
-    "organism": "Proteus vulgaris"
-  },
-  "result_yersinia": {
-    "id": "result_yersinia",
-    "type": "result",
-    "label": "Yersinia spp.",
-    "description": "Gram negative rod, oxidase negative, lactose negative, H₂S negative, motile at 25°C but non-motile at 37°C (a useful distinguishing feature). Y. pestis causes plague (bubonic, septicemic, pneumonic); Y. enterocolitica causes gastroenteritis and reactive arthritis (Reiter syndrome). Cold-tolerant — can multiply in refrigerated food.",
-    "organism": "Yersinia spp."
-  },
-  "glucose_of": {
-    "id": "glucose_of",
-    "type": "decision",
-    "label": "Glucose O/F Test",
-    "description": "Inoculate two tubes of Hugh-Leifson O/F medium; overlay one with mineral oil (anaerobic). Acid in both tubes = fermentation. Acid in open tube only = oxidation. No acid in either = non-reactive. Separates fermenters (Vibrio, Aeromonas) from oxidizers (Pseudomonas).",
-    "question": "How does the organism utilize glucose in O/F medium?",
-    "options": [
-      {
-        "label": "Fermentation (acid in both tubes)",
+        "label": "yes (produces acid)",
         "nextId": "salt_curved"
       },
       {
-        "label": "Oxidation only (open tube only)",
+        "label": "no (does not produce acid)",
         "nextId": "pyocyanin"
       }
     ]
@@ -295,7 +195,7 @@
     "id": "salt_curved",
     "type": "decision",
     "label": "Salt Tolerance + Cell Morphology",
-    "description": "Test growth in 6.5% NaCl broth (halophilic = Vibrio) and examine cell morphology. Vibrio has characteristic curved or comma-shaped cells and tolerates salt. Aeromonas is a straight rod and is not halophilic.",
+    "description": "Ask Dr. Hussa. This isn't in your lab manual. Basically, we need to have growth media that is comprised of 6.5% NaCl. Regular growth medium has 1% NaCl. Cell curvature should have been visible during our previous microscope analysis.",
     "question": "Does the organism tolerate 6.5% NaCl and/or have curved cells?",
     "options": [
       {
@@ -352,5 +252,123 @@
     "label": "Burkholderia / Stenotrophomonas",
     "description": "Gram negative rod, oxidase positive (Burkholderia) or variable, non-fermenter, no pyocyanin. B. cepacia complex is a devastating pathogen in CF patients (accelerates lung decline, \"cepacia syndrome\"). S. maltophilia is an emerging opportunistic pathogen with very high intrinsic antibiotic resistance (resistant to carbapenems); TMP-SMX is drug of choice.",
     "organism": "Burkholderia / Stenotrophomonas"
+  },
+  "Citrate_test": {
+    "id": "Citrate_test",
+    "type": "decision",
+    "label": "Citrate test",
+    "description": "The citrate test is part of a group of tests called IMViC, described in exercise 23 of your book. Please read through the procedure to find the materials required for the citrate test. ",
+    "organism": "",
+    "question": "Can your organism use citrate as the sole carbon source? ",
+    "options": [
+      {
+        "label": "yes",
+        "nextId": "VP_and_H2S"
+      },
+      {
+        "label": "no",
+        "nextId": "result_ecoli"
+      }
+    ]
+  },
+  "VP_and_H2S": {
+    "id": "VP_and_H2S",
+    "type": "decision",
+    "label": "VP and Hydrogen sulfide tests",
+    "description": "The VP (Voges-Proskauer) and H2S (hydrogen sulfide) tests are two of the four IMViC tests, described in exercise 23 in your book. Read the procedure carefully to determine which reagents you need. Fill out one request form for each test, or make it clear you are requesting for two tests on one form so you get more points!",
+    "organism": "",
+    "question": "What are the results of this combination of tests?",
+    "options": [
+      {
+        "label": "VP negative",
+        "nextId": "Citrobacter_diversus"
+      },
+      {
+        "label": "VP positive, H2S positive",
+        "nextId": "Erwinia_chrysanthemi"
+      },
+      {
+        "label": "VP positive, H2S negative",
+        "nextId": "Klebsiella_oxytoca"
+      }
+    ]
+  },
+  "Citrobacter_diversus": {
+    "id": "Citrobacter_diversus",
+    "type": "result",
+    "label": "Citrobacter diversus",
+    "description": "Citrobacter diversus is a gram negative rod that is oxidase negative, lactose positive, indole positive, citrate positive, and VP negative.",
+    "organism": "Citrobacter diversus"
+  },
+  "Erwinia_chrysanthemi": {
+    "id": "Erwinia_chrysanthemi",
+    "type": "result",
+    "label": "Erwinia chrysanthemi",
+    "description": "Erwinia chrysanthemi is a gram negative rod that is oxidase negative, lactose positive, indole positive, citrate positive, VP positive, and H2S positive.",
+    "organism": "Erwinia chrysanthemi"
+  },
+  "Klebsiella_oxytoca": {
+    "id": "Klebsiella_oxytoca",
+    "type": "result",
+    "label": "Klebsiella oxytoca",
+    "description": "Klebsiella oxytoca is a gram negative rod that is oxidase negative, lactose positive, indole positive, citrate positive, VP positive, and H2S negative.",
+    "organism": "Klebsiella oxytoca"
+  },
+  "MR_VP": {
+    "id": "MR_VP",
+    "type": "decision",
+    "label": "MR and VP tests",
+    "description": "The MR (methyl red) and VP (Voges-Proskauer) are two of the four IMViC tests, described in exercise 23 in your book. Read the procedure carefully to determine which reagents you need.",
+    "organism": "",
+    "question": "What are the results of these two tests?",
+    "options": [
+      {
+        "label": "MR +, VP +",
+        "nextId": "Enterobacter_intermedius"
+      },
+      {
+        "label": "MR+, VP-",
+        "nextId": "h2s"
+      },
+      {
+        "label": "MR-, VP+",
+        "nextId": "are_you_sure"
+      }
+    ]
+  },
+  "Enterobacter_intermedius": {
+    "id": "Enterobacter_intermedius",
+    "type": "result",
+    "label": "Enterobacter intermedius",
+    "description": "Enterobacter intermedius is a gram negative rod that is oxidase negative, lactose positive, indole negative, MR positive, and VP positive.",
+    "organism": "Enterobacter intermedius"
+  },
+  "Citrobacter_freundii": {
+    "id": "Citrobacter_freundii",
+    "type": "result",
+    "label": "Citrobacter freundii",
+    "description": "Citrobacter freundii is a gram negative rod that is oxidase negative, lactose positive, indole negative, MR positive, VP negative, and H2S positive.",
+    "organism": "Citrobacter freundii"
+  },
+  "Serratia_fonticola": {
+    "id": "Serratia_fonticola",
+    "type": "result",
+    "label": "Serratia fonticola",
+    "description": "Serratia fonticola is a gram negative rod that is oxidase negative, lactose positive, indole negative, MR positive, VP negative, H2S negative, and motile",
+    "organism": "Serratia fonticola"
+  },
+  "Klebsiella_pneumoniae_subsp_ozaenae": {
+    "id": "Klebsiella_pneumoniae_subsp_ozaenae",
+    "type": "result",
+    "label": "Klebsiella pneumoniae subspecies ozaenae",
+    "description": "Klebsiella pneumoniae subspecies ozaenae is a gram negative rod that is oxidase negative, lactose positive, indole negative, MR positive, VP negative, H2S negative, and nonmotile.",
+    "organism": "Klebsiella pneumoniae subspecies ozaenae"
+  },
+  "are_you_sure": {
+    "id": "are_you_sure",
+    "type": "result",
+    "label": "Are you sure?",
+    "description": "If you land here, it is not because you've done something wrong, but these results are unusual. Consult with Dr. Hussa on how to proceed.",
+    "organism": ""
   }
 }

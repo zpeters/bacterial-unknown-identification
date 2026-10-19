@@ -3,12 +3,12 @@
     "id": "root",
     "type": "decision",
     "label": "Cell Morphology",
-    "description": "After confirming Gram positive stain, determine the shape of the cells under the microscope.",
-    "question": "What is the cell morphology of your Gram positive organism?",
+    "description": "After confirming Gram positive stain, recall the shape of the cells.",
+    "question": "What is the shape of your Gram positive organism?",
     "options": [
       {
         "label": "Cocci (spherical)",
-        "nextId": "catalase"
+        "nextId": "catalase_Gpos_coccus"
       },
       {
         "label": "Rods (bacilli)",
@@ -16,8 +16,8 @@
       }
     ]
   },
-  "catalase": {
-    "id": "catalase",
+  "catalase_Gpos_coccus": {
+    "id": "catalase_Gpos_coccus",
     "type": "decision",
     "label": "Catalase Test",
     "description": "Add a drop of 3% hydrogen peroxide to a colony. Bubbling (O₂ release) = positive. Catalase breaks down H₂O₂ into water and oxygen.",
@@ -25,7 +25,7 @@
     "options": [
       {
         "label": "Positive (+) — bubbles",
-        "nextId": "coagulase"
+        "nextId": "mannitol_fermentation_g_pos_coccus"
       },
       {
         "label": "Negative (−) — no bubbles",
@@ -33,43 +33,19 @@
       }
     ]
   },
-  "coagulase": {
-    "id": "coagulase",
-    "type": "decision",
-    "label": "Coagulase Test",
-    "description": "Mix colony with rabbit plasma. Clot formation = positive. Coagulase-positive staphylococci can clot fibrinogen.",
-    "question": "What is the result of the coagulase test?",
-    "options": [
-      {
-        "label": "Positive (+) — clot forms",
-        "nextId": "result_aureus"
-      },
-      {
-        "label": "Negative (−) — no clot",
-        "nextId": "novobiocin"
-      }
-    ]
-  },
-  "result_aureus": {
-    "id": "result_aureus",
-    "type": "result",
-    "label": "Staphylococcus aureus",
-    "description": "Gram positive, catalase positive, coagulase positive. A major human pathogen; causes skin infections, pneumonia, endocarditis, and toxic shock syndrome. Often displays golden-yellow colonies.",
-    "organism": "Staphylococcus aureus"
-  },
   "novobiocin": {
     "id": "novobiocin",
     "type": "decision",
     "label": "Novobiocin Sensitivity",
-    "description": "Place a novobiocin disk on the plate. A zone of inhibition ≥ 16 mm = sensitive. Differentiates coagulase-negative Staphylococcus species.",
+    "description": "Your lab manual has an exercise (#35) dedicated to how to test for antibiotic sensitivity. We can test novobiocin along with other antibiotics using this test. Dr. Hussa will decide which other antibiotics to test (based on what we have in stock)",
     "question": "What is the result of the novobiocin sensitivity test?",
     "options": [
       {
-        "label": "Sensitive (zone ≥ 16 mm)",
+        "label": "Sensitive ",
         "nextId": "result_epidermidis"
       },
       {
-        "label": "Resistant (zone < 16 mm)",
+        "label": "Resistant ",
         "nextId": "result_saprophyticus"
       }
     ]
@@ -78,14 +54,14 @@
     "id": "result_epidermidis",
     "type": "result",
     "label": "Staphylococcus epidermidis",
-    "description": "Gram positive, catalase positive, coagulase negative, novobiocin sensitive. Common skin commensal; clinically significant in immunocompromised patients and prosthetic device infections.",
+    "description": "Staphylococcus epidermidis is Gram positive, catalase positive, mannitol negative, not yellow, and novobiocin sensitive. ",
     "organism": "Staphylococcus epidermidis"
   },
   "result_saprophyticus": {
     "id": "result_saprophyticus",
     "type": "result",
     "label": "Staphylococcus saprophyticus",
-    "description": "Gram positive, catalase positive, coagulase negative, novobiocin resistant. Common cause of urinary tract infections in young sexually active women.",
+    "description": "Staphylococcus saprophyticus is Gram positive, catalase positive, mannitol negative, not yellow, and novobiocin resistant. ",
     "organism": "Staphylococcus saprophyticus"
   },
   "hemolysis": {
@@ -224,24 +200,17 @@
     "type": "decision",
     "label": "Oxygen Requirements",
     "description": "If an organism is strictly anaerobic, it will not grow in the presence of oxygen. ",
-    "question": "What are the oxygen requirements of the spore-forming rod?",
+    "question": "What are the oxygen requirements of the spore-forming rod? You do not need to do an experiment for this...",
     "options": [
       {
         "label": "Aerobic / Facultative",
-        "nextId": "result_bacillus"
+        "nextId": "Bacillus_Starch"
       },
       {
         "label": "Strictly Anaerobic",
         "nextId": "result_clostridium"
       }
     ]
-  },
-  "result_bacillus": {
-    "id": "result_bacillus",
-    "type": "result",
-    "label": "Bacillus spp.",
-    "description": "Gram positive, endospore-forming, aerobic rod. Includes B. anthracis (anthrax), B. cereus (food poisoning), and B. subtilis (common lab saprophyte). Spores are highly resistant to heat and chemicals.",
-    "organism": "Bacillus spp."
   },
   "result_clostridium": {
     "id": "result_clostridium",
@@ -271,16 +240,16 @@
     "id": "catalase_rod",
     "type": "decision",
     "label": "Catalase Test",
-    "description": "Find the catalase test in the lab manual. We will use the slide method.",
+    "description": "Add a drop of 3% hydrogen peroxide to a colony. Bubbling (O₂ release) = positive. Catalase breaks down H₂O₂ into water and oxygen.",
     "question": "Is the organism catalase positive or negative?",
     "options": [
       {
-        "label": "Positive ",
+        "label": "Positive (+) — bubbles",
         "nextId": "starch_hydrolysis"
       },
       {
-        "label": "Negative ",
-        "nextId": "glucose_fermentation"
+        "label": "Negative (−) — no bubbles",
+        "nextId": "glucose_fermentation_gpos_rods"
       }
     ]
   },
@@ -291,11 +260,11 @@
     "description": "Mycobacterium smegmatis: Gram positive rods, endospore negative, acid fast.",
     "organism": "mycobacterium smegmatis"
   },
-  "glucose_fermentation": {
-    "id": "glucose_fermentation",
+  "glucose_fermentation_gpos_rods": {
+    "id": "glucose_fermentation_gpos_rods",
     "type": "decision",
     "label": "Glucose fermentation Test",
-    "description": "The glucose fermentation test is PART of a series of tests labeled \"Carbohydrates I: Fermentation and beta galactosidase activity\" in you manual. We will use the Durham tube procedure",
+    "description": "The glucose fermentation test is PART of a series of tests labeled \"Carbohydrates I: Fermentation and beta galactosidase activity\" in you manual. We will use the Durham tube procedure.",
     "organism": "",
     "question": "is your organism positive for glucose fermentation?",
     "options": [
@@ -379,5 +348,366 @@
     "label": "Corynebacterium xerosis",
     "description": "Corynebacterium xerosis is a gram positive rod that is negative for spore formation, negative for acid-fast staining, positive for catalase activity, and negative for starch hydrolysis",
     "organism": "Corynebacterium xerosis"
+  },
+  "Bacillus_Starch": {
+    "id": "Bacillus_Starch",
+    "type": "decision",
+    "label": "Starch Hydrolysis",
+    "description": "Find the starch hydrolysis experiment in your lab manual. ",
+    "organism": "",
+    "question": "Does your organism use amylase to hydrolyze starch?",
+    "options": [
+      {
+        "label": "Yes (amylase+)",
+        "nextId": "Bacillus_Voges_Proskauer"
+      },
+      {
+        "label": "No (amylase -)",
+        "nextId": "bacillus_catalase"
+      }
+    ]
+  },
+  "Bacillus_Voges_Proskauer": {
+    "id": "Bacillus_Voges_Proskauer",
+    "type": "decision",
+    "label": "VP test (Voges-Proskauer) Bacillus",
+    "description": "Find the Voges-Proskauer test in your lab manual. Note that this is a part of a series of tests in the exercise, and the first part of the procedure is listed under \"methyl red test,\" because the methyl red and voges-proskauer tests are often done together as the \"MR-VP test\"",
+    "organism": "",
+    "question": "Does your organism produce 2,3 butanediol as a result of glucose fermentation?",
+    "options": [
+      {
+        "label": "yes (acetoin +)",
+        "nextId": "Cell_Diameter_bacillus"
+      },
+      {
+        "label": "no (acetoin -)",
+        "nextId": "swollen_cell_amylase_positive"
+      }
+    ]
+  },
+  "bacillus_catalase": {
+    "id": "bacillus_catalase",
+    "type": "decision",
+    "label": "Catalase Test (bacillus)",
+    "description": "Add a drop of 3% hydrogen peroxide to a colony. Bubbling (O₂ release) = positive. Catalase breaks down H₂O₂ into water and oxygen.",
+    "organism": "",
+    "question": "What is the result of the catalase test?",
+    "options": [
+      {
+        "label": "Positive (+) — bubbles",
+        "nextId": "Swollen_cell_bacillus"
+      },
+      {
+        "label": "Negative (−) — no bubbles",
+        "nextId": "citrate_amylase_negative"
+      }
+    ]
+  },
+  "Swollen_cell_bacillus": {
+    "id": "Swollen_cell_bacillus",
+    "type": "decision",
+    "label": "Swollen Cell (amylase negative)",
+    "description": "No test is needed for this. Were your cells swollen (bulging) around the spore during sporulation (endospore test)? Ask Dr. Hussa for clarification. ",
+    "organism": "",
+    "question": "Was your sporulating cell swollen?",
+    "options": [
+      {
+        "label": "Yes",
+        "nextId": "are_you_sure"
+      },
+      {
+        "label": "No",
+        "nextId": "are_you_sure"
+      }
+    ]
+  },
+  "citrate_amylase_negative": {
+    "id": "citrate_amylase_negative",
+    "type": "decision",
+    "label": "Citrate Test (amylase negative)",
+    "description": "The citrate test is part of a group of tests called IMViC, described in exercise 23 of your book. Please read through the procedure to find the materials required for the citrate test. ",
+    "organism": "",
+    "question": "Can your bacterium use citrate as a sole carbon source?",
+    "options": [
+      {
+        "label": "yes",
+        "nextId": "Bacillus_azotoformans"
+      },
+      {
+        "label": "no",
+        "nextId": "b_larvae_or_popilliae"
+      }
+    ]
+  },
+  "Bacillus_azotoformans": {
+    "id": "Bacillus_azotoformans",
+    "type": "result",
+    "label": "Bacillus azotoformans",
+    "description": "Bacillus azotoformans is a gram positive rod that makes endospores and grows under aerobic conditions. It is amylase negative, catalase negative, and citrate positive.",
+    "organism": "Bacillus azotoformans"
+  },
+  "b_larvae_or_popilliae": {
+    "id": "b_larvae_or_popilliae",
+    "type": "result",
+    "label": "Bacillus larvae or Bacullus popilliae",
+    "description": "we cannot easily distinguish between these two in our lab (talk to Dr. Hussa)",
+    "organism": ""
+  },
+  "are_you_sure": {
+    "id": "are_you_sure",
+    "type": "result",
+    "label": "are you sure?",
+    "description": "If you have reached this page, please consult with Dr. Hussa on how to complete your analysis",
+    "organism": "none"
+  },
+  "Cell_Diameter_bacillus": {
+    "id": "Cell_Diameter_bacillus",
+    "type": "decision",
+    "label": "Cell Diameter (Bacillus)",
+    "description": "This test does not require a separate experiment. Consult with Dr. Hussa to determine the answer to this question",
+    "organism": "",
+    "question": "Is your organism greater than 1 micrometer in width (diameter)? ",
+    "options": [
+      {
+        "label": "yes",
+        "nextId": "are_you_sure"
+      },
+      {
+        "label": "no",
+        "nextId": "citrate_test_bacillus_amylase_positive"
+      }
+    ]
+  },
+  "citrate_test_bacillus_amylase_positive": {
+    "id": "citrate_test_bacillus_amylase_positive",
+    "type": "decision",
+    "label": "Citrate test (amylase positive)",
+    "description": "The citrate test is part of a group of tests called IMViC, described in exercise 23 of your book. Please read through the procedure to find the materials required for the citrate test. ",
+    "organism": "",
+    "question": "Can your bacterium use Citrate as the sole carbon source?",
+    "options": [
+      {
+        "label": "yes",
+        "nextId": "6_5_percent_NaCl_growth"
+      },
+      {
+        "label": "no",
+        "nextId": "Mannitol_Fermentation_amylase_positive"
+      }
+    ]
+  },
+  "Mannitol_Fermentation_amylase_positive": {
+    "id": "Mannitol_Fermentation_amylase_positive",
+    "type": "decision",
+    "label": "Mannitol Fermentation (Amylase Positive)",
+    "description": "The mannitol fermentation test is described within the \"streak plate technique\" test section of your lab manual (exercise 15).",
+    "organism": "",
+    "question": "Does your organism ferment Mannitol?",
+    "options": [
+      {
+        "label": "yes",
+        "nextId": "Bacillus_Polymyxa"
+      },
+      {
+        "label": "no",
+        "nextId": "Bacillus_alvei"
+      }
+    ]
+  },
+  "Bacillus_Polymyxa": {
+    "id": "Bacillus_Polymyxa",
+    "type": "result",
+    "label": "Bacillus polymyxa",
+    "description": "Bacillus polymyxa is a gram positive rod that makes endospores and grows under aerobic conditions. It is amylase positive, vogues proskauer positive, <1 micrometer, citrate negative, and mannitol positive.",
+    "organism": "Bacillus polymyxa"
+  },
+  "Bacillus_alvei": {
+    "id": "Bacillus_alvei",
+    "type": "result",
+    "label": "Bacillus alvei",
+    "description": "Bacillus alvei is a gram positive rod that makes endospores and grows under aerobic conditions. It is amylase positive, vogues proskauer positive, <1 micrometer, citrate negative, and mannitol negative.",
+    "organism": "Bacillus alvei"
+  },
+  "6_5_percent_NaCl_growth": {
+    "id": "6_5_percent_NaCl_growth",
+    "type": "decision",
+    "label": "6.5% NaCl growth",
+    "description": "Ask Dr. Hussa. This isn't in your lab manual. Basically, we need to have growth media that is comprised of 6.5% NaCl. Regular growth medium has 1% NaCl. ",
+    "organism": "",
+    "question": "Can your organism grow in 6.5% salt medium?",
+    "options": [
+      {
+        "label": "yes",
+        "nextId": "Growth_at_55_degrees_celsius"
+      },
+      {
+        "label": "no",
+        "nextId": "Bacillus_coagulans"
+      }
+    ]
+  },
+  "Bacillus_coagulans": {
+    "id": "Bacillus_coagulans",
+    "type": "result",
+    "label": "Bacillus coagulans",
+    "description": "Bacillus coagulans is a gram positive rod that makes endospores and grows under aerobic conditions. It is amylase positive, vogues proskauer positive, <1 micrometer, citrate positive, and cannot grow in 6.5% salt (NaCl).",
+    "organism": "Bacillus coagulans"
+  },
+  "Growth_at_55_degrees_celsius": {
+    "id": "Growth_at_55_degrees_celsius",
+    "type": "decision",
+    "label": "Growth at 55 degrees celsius",
+    "description": "This is not in your lab manual. We instead just need to try and grow your organism in regular growth medium at 55 degrees celsius, then observe whether the organism grew successfully.",
+    "organism": "",
+    "question": "Can your organism grow at 55 degrees?",
+    "options": [
+      {
+        "label": "yes",
+        "nextId": "Bacillus_licheniformis"
+      },
+      {
+        "label": "no",
+        "nextId": "Bacillus_subtilis"
+      }
+    ]
+  },
+  "Bacillus_subtilis": {
+    "id": "Bacillus_subtilis",
+    "type": "result",
+    "label": "Bacillus subtilis",
+    "description": "Bacillus subtilis is a gram positive rod that makes endospores and grows under aerobic conditions. It is amylase positive, vogues proskauer positive, <1 micrometer, citrate positive, can grow in 6.5% NaCl, and cannot grow at 55 degrees.",
+    "organism": "Bacillus subtilis"
+  },
+  "Bacillus_licheniformis": {
+    "id": "Bacillus_licheniformis",
+    "type": "result",
+    "label": "Bacillus licheniformis",
+    "description": "Bacillus licheniformis is a gram positive rod that makes endospores and grows under aerobic conditions. It is amylase positive, vogues proskauer positive, <1 micrometer, citrate positive, can grow in 6.5% NaCl, and can grow at 55 degrees.",
+    "organism": "Bacillus licheniformis"
+  },
+  "swollen_cell_amylase_positive": {
+    "id": "swollen_cell_amylase_positive",
+    "type": "decision",
+    "label": "swollen cell (amylase positive)",
+    "description": "No test is needed for this. Were your cells swollen (bulging) around the spore during sporulation (endospore test)? Ask Dr. Hussa for clarification. ",
+    "organism": "",
+    "question": "Was your sporulating cell swollen?",
+    "options": [
+      {
+        "label": "yes",
+        "nextId": "are_you_sure"
+      },
+      {
+        "label": "no",
+        "nextId": "citrate_test_amylase_pos_vp_neg"
+      }
+    ]
+  },
+  "citrate_test_amylase_pos_vp_neg": {
+    "id": "citrate_test_amylase_pos_vp_neg",
+    "type": "decision",
+    "label": "citrate test (amylase positive VP negative)",
+    "description": "The citrate test is part of a group of tests called IMViC, described in exercise 23 of your book. Please read through the procedure to find the materials required for the citrate test. ",
+    "organism": "",
+    "question": "Can your bacterium use Citrate as the sole carbon source?",
+    "options": [
+      {
+        "label": "yes",
+        "nextId": "Bacillus_megaterium"
+      },
+      {
+        "label": "no",
+        "nextId": "Bacillus_badius"
+      }
+    ]
+  },
+  "Bacillus_megaterium": {
+    "id": "Bacillus_megaterium",
+    "type": "result",
+    "label": "Bacillus megaterium",
+    "description": "Bacillus megaterium is a gram positive rod that makes endospores and grows under aerobic conditions. It is amylase positive, vogues proskauer negative, does not swell during sporulation, and is citrate positive.",
+    "organism": "Bacillus megaterium"
+  },
+  "Bacillus_badius": {
+    "id": "Bacillus_badius",
+    "type": "result",
+    "label": "Bacillus badius",
+    "description": "Bacillus megaterium is a gram positive rod that makes endospores and grows under aerobic conditions. It is amylase positive, vogues proskauer negative, does not swell during sporulation, and is citrate negative.",
+    "organism": "Bacillus badius"
+  },
+  "mannitol_fermentation_g_pos_coccus": {
+    "id": "mannitol_fermentation_g_pos_coccus",
+    "type": "decision",
+    "label": "mannitol fermentation (Gram positive coccus)",
+    "description": "The mannitol fermentation test is described within the \"streak plate technique\" test section of your lab manual (exercise 15).",
+    "organism": "",
+    "question": "Does your organism ferment mannitol?",
+    "options": [
+      {
+        "label": "yes",
+        "nextId": "Staph_aureus"
+      },
+      {
+        "label": "no",
+        "nextId": "yellow_colony"
+      }
+    ]
+  },
+  "Staph_aureus": {
+    "id": "Staph_aureus",
+    "type": "result",
+    "label": "Staphylococcus aureus",
+    "description": "Staphylococcus aureus is a gram positive coccus shaped organism that is catalase positive and can ferment mannitol.",
+    "organism": "Staphylococcus aureus"
+  },
+  "yellow_colony": {
+    "id": "yellow_colony",
+    "type": "decision",
+    "label": "yellow pigmentation ",
+    "description": "This does not require an experiment. Look at the colonies of your unknown organism. They may be obviously yellow (not beige).",
+    "organism": "",
+    "question": "Are your colonies yellow?",
+    "options": [
+      {
+        "label": "yes, they are yellow",
+        "nextId": "glucose_fermentation_gpos_coccus"
+      },
+      {
+        "label": "no, they are not yellow",
+        "nextId": "novobiocin"
+      }
+    ]
+  },
+  "glucose_fermentation_gpos_coccus": {
+    "id": "glucose_fermentation_gpos_coccus",
+    "type": "decision",
+    "label": "Glucose fermentation (gram + coccus)",
+    "description": "The glucose fermentation test is PART of a series of tests labeled \"Carbohydrates I: Fermentation and beta galactosidase activity\" in you manual. We will use the Durham tube procedure.",
+    "organism": "",
+    "question": "Does your organism ferment glucose?",
+    "options": [
+      {
+        "label": "Yes (produces acid and/or gas)",
+        "nextId": "micrococcus_varians"
+      },
+      {
+        "label": "No (no acid or gas)",
+        "nextId": "Micrococcus_luteus"
+      }
+    ]
+  },
+  "micrococcus_varians": {
+    "id": "micrococcus_varians",
+    "type": "result",
+    "label": "Micrococcus varians ",
+    "description": "Micrococcus varians is a Gram positive coccus shaped organism that is catalase positive, cannot ferment mannitol, does produce a yellow pigment, and can ferment glucose.",
+    "organism": "Micrococcus varians"
+  },
+  "Micrococcus_luteus": {
+    "id": "Micrococcus_luteus",
+    "type": "result",
+    "label": "Micrococcus luteus",
+    "description": "Micrococcus luteus is a Gram positive coccus shaped organism that is catalase positive, cannot ferment mannitol, does produce a yellow pigment, and cannot ferment glucose.",
+    "organism": "Micrococcus luteus"
   }
 }
